@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class WorkerAuthController extends Controller
+class AuthWorkerController extends Controller
 {
     public function register(Request $request)
     {
