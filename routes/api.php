@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilityController;
-use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Worker\WorkerAuthController;
+use App\Http\Controllers\Admin\AuthAdminController;
+use App\Http\Controllers\Company\JobCompanyController;
+use App\Http\Controllers\Worker\AuthWorkerController;
+use App\Http\Controllers\Worker\JobWorkerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,27 +19,46 @@ use App\Http\Controllers\Worker\WorkerAuthController;
 |
 */
 
-//* Utility
+//* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
 Route::get('/unauthenticated', [UtilityController::class, 'unauthenticated'])->name('unauthenticated');
 
-//* Main Route
-Route::prefix('worker')->controller(WorkerAuthController::class)->group(function () {
-    Route::post('/register', 'register');
-    Route::post('/login', 'login');
 
-    Route::middleware(['middleware' => 'auth:worker'])->group(function () {
-        Route::post('/logout', 'logout');
-        Route::get('/me', 'me');
+//* >===== Admin =====<
+// => Auth
+Route::group(['prefix' => 'admin'], function () {
+    Route::post('/register', [AuthAdminController::class, 'register']);
+    Route::post('/login', [AuthAdminController::class, 'login']);
+    
+    Route::middleware(['middleware' => 'auth:admin'])->group(function () {
+        Route::post('/logout', [AuthAdminController::class, 'logout']);
+        Route::get('/me', [AuthAdminController::class, 'me']);
     });
 });
 
-Route::prefix('admin')->controller(AdminAuthController::class)->group(function () {
-    Route::post('/register', 'register');
-    Route::post('/login', 'login');
 
-    Route::middleware(['middleware' => 'auth:admin'])->group(function () {
-        Route::post('/logout', 'logout');
-        Route::get('/me', 'me');
+//* >===== Worker =====<
+// => Job
+Route::group(['prefix' => 'job', 'middleware' => 'auth:worker'], function () {
+    Route::get('/', [JobWorkerController::class, 'all']);
+    Route::get('/{id}', [JobWorkerController::class, 'show']);
+});
+// => Auth
+Route::group(['prefix' => 'worker'], function () {
+    Route::post('/register', [AuthWorkerController::class, 'register']);
+    Route::post('/login', [AuthWorkerController::class, 'login']);
+    
+    Route::middleware(['middleware' => 'auth:worker'])->group(function () {
+        Route::post('/logout', [AuthWorkerController::class, 'logout']);
+        Route::get('/me', [AuthWorkerController::class, 'me']);
     });
+});
+
+
+//* >===== Company =====<
+// => job
+Route::group(['prefix' => 'job', 'middleware' => 'auth:admin'], function () {
+    // Route::get('/', [JobWorkerController::class, 'all']);
+    // Route::get('/{id}', [JobWorkerController::class, 'show']);
+    Route::post('/create', [JobCompanyController::class, 'create']);
 });
