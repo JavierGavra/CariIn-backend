@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\Admin\AuthAdminController;
+use App\Http\Controllers\Company\AuthCompanyController;
 use App\Http\Controllers\Company\JobCompanyController;
 use App\Http\Controllers\Worker\AuthWorkerController;
 use App\Http\Controllers\Worker\JobWorkerController;
@@ -57,8 +58,18 @@ Route::group(['prefix' => 'worker'], function () {
 
 //* >===== Company =====<
 // => job
-Route::group(['prefix' => 'job', 'middleware' => 'auth:admin'], function () {
-    // Route::get('/', [JobWorkerController::class, 'all']);
+Route::group(['prefix' => 'companyjob', 'middleware' => 'auth:admin'], function () {
+    Route::get('/', [JobCompanyController::class, 'all']);
     // Route::get('/{id}', [JobWorkerController::class, 'show']);
     Route::post('/create', [JobCompanyController::class, 'create']);
+});
+// => Auth
+Route::group(['prefix' => 'company'], function () {
+    Route::post('/register', [AuthCompanyController::class, 'register']);
+    Route::post('/login', [AuthCompanyController::class, 'login']);
+
+    Route::middleware(['middleware' => 'auth:company'])->group(function () {
+        Route::post('/logout', [AuthCompanyController::class, 'logout']);
+        Route::get('/me', [AuthCompanyController::class, 'me']);
+    });
 });

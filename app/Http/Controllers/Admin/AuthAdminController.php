@@ -13,8 +13,8 @@ class AuthAdminController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:App\Models\Worker,username',
-            'email' => 'required|email|unique:App\Models\Worker,email',
+            'username' => 'required|unique:App\Models\Admin,username',
+            'email' => 'required|email|unique:App\Models\Admin,email',
             'password' => 'required',
             'gender' => 'required'
         ]);

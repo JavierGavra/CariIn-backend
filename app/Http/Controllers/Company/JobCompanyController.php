@@ -47,4 +47,14 @@ class JobCompanyController extends Controller
             ]);
         }
     }
+
+    public function all()
+    {
+        $job = Job::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'Get all job data',
+            // 'data' => $job,
+        ]);
+    }
 }
