@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Models\Job;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Company\JobListResource;
 use Illuminate\Http\Request;
 
 class JobCompanyController extends Controller
@@ -22,11 +23,13 @@ class JobCompanyController extends Controller
             'description' =>'required'
         ]);
 
+        $company = auth()->user();
         $job = Job::create([
             'title' => $request->title,
             'city' => $request->city,
             'time_type' => $request->time_type,
             'salary' => $request->salary,
+            'company_id' => $company->id,
             'gender' => $request->gender,
             'education' => $request->education,
             'minimum_age' => $request->minimum_age,
@@ -50,11 +53,12 @@ class JobCompanyController extends Controller
 
     public function all()
     {
-        $job = Job::all();
+        $company = auth()->user();
+        $job = JobListResource::collection(Job::where('company_id', $company->id)->get());
         return response()->json([
             'success' => true,
-            'message' => 'Get all job data',
-            // 'data' => $job,
+            'message' => 'Get all my job data',
+            'data' => $job,
         ]);
     }
 }

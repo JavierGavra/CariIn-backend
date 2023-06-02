@@ -26,7 +26,7 @@ class JobWorkerController extends Controller
                 'success' => false,
                 'message' => 'Data not found',
                 'data' => [],
-            ]);
+            ], 404);
         }
         return response()->json([
             'success' => true,

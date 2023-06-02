@@ -26,8 +26,8 @@ Route::get('/unauthenticated', [UtilityController::class, 'unauthenticated'])->n
 
 
 //* >===== Admin =====<
-// => Auth
 Route::group(['prefix' => 'admin'], function () {
+    # Auth pt. 1
     Route::post('/register', [AuthAdminController::class, 'register']);
     Route::post('/login', [AuthAdminController::class, 'login']);
     
@@ -39,37 +39,41 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 //* >===== Worker =====<
-// => Job
-Route::group(['prefix' => 'job', 'middleware' => 'auth:worker'], function () {
-    Route::get('/', [JobWorkerController::class, 'all']);
-    Route::get('/{id}', [JobWorkerController::class, 'show']);
-});
-// => Auth
 Route::group(['prefix' => 'worker'], function () {
+    # Auth pt.1
     Route::post('/register', [AuthWorkerController::class, 'register']);
     Route::post('/login', [AuthWorkerController::class, 'login']);
     
     Route::middleware(['middleware' => 'auth:worker'])->group(function () {
+        # Auth pt.2
         Route::post('/logout', [AuthWorkerController::class, 'logout']);
         Route::get('/me', [AuthWorkerController::class, 'me']);
+
+        # Job
+        Route::prefix('job')->controller(JobWorkerController::class)->group(function () {
+            Route::get('/', 'all');
+            Route::get('/{id}', 'show');
+        });
     });
 });
 
 
 //* >===== Company =====<
-// => job
-Route::group(['prefix' => 'companyjob', 'middleware' => 'auth:admin'], function () {
-    Route::get('/', [JobCompanyController::class, 'all']);
-    // Route::get('/{id}', [JobWorkerController::class, 'show']);
-    Route::post('/create', [JobCompanyController::class, 'create']);
-});
-// => Auth
 Route::group(['prefix' => 'company'], function () {
+    # Auth pt.1
     Route::post('/register', [AuthCompanyController::class, 'register']);
     Route::post('/login', [AuthCompanyController::class, 'login']);
-
+    
     Route::middleware(['middleware' => 'auth:company'])->group(function () {
+        # Auth pt.2
         Route::post('/logout', [AuthCompanyController::class, 'logout']);
         Route::get('/me', [AuthCompanyController::class, 'me']);
+        
+        # job
+        Route::prefix('job')->controller(JobCompanyController::class)->group(function () {
+            Route::get('/', 'all');
+            // Route::get('/{id}', 'show');
+            Route::post('/create', 'create');
+        });
     });
 });
