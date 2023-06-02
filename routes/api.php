@@ -3,11 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilityController;
-use App\Http\Controllers\Admin\AuthAdminController;
-use App\Http\Controllers\Company\AuthCompanyController;
-use App\Http\Controllers\Company\JobCompanyController;
-use App\Http\Controllers\Worker\AuthWorkerController;
-use App\Http\Controllers\Worker\JobWorkerController;
+use App\Http\Controllers\Admin\AuthController as AuthAdminController;
+use App\Http\Controllers\Company\AuthController as AuthCompanyController;
+use App\Http\Controllers\Company\JobController as JobCompanyController;
+use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
+use App\Http\Controllers\Worker\JobController as JobWorkerController;
 
 /*
 |--------------------------------------------------------------------------

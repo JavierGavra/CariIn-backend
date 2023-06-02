@@ -6,7 +6,7 @@ use App\Models\Job;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class JobWorkerController extends Controller
+class JobController extends Controller
 {
     public function all()
     {
