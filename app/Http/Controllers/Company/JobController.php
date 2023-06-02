@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Company\JobListResource;
 use Illuminate\Http\Request;
 
-class JobCompanyController extends Controller
+class JobController extends Controller
 {
     public function create(Request $request)
     {
