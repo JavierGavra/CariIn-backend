@@ -58,7 +58,7 @@ class AuthWorkerController extends Controller
         if (! $token = auth()->guard('worker')->attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized',
+                'message' => 'Something wrong',
                 'data' => []
             ], 401);
         }

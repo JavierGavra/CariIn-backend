@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('city');
             $table->enum('time_type', ['Full time', 'Part time']);
             $table->bigInteger('salary');
-            $table->enum('gender', ["male", "female"]);
+            $table->foreignId('company_id');
+            $table->enum('gender', ["male", "female", "all"]);
             $table->enum('education', ["SMP", "SMA", "SMK"]);
             $table->integer('minimum_age');
             $table->integer('maximum_age');
