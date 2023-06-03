@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Worker;
 
 use App\Models\Job;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Worker\JobListResource;
+use App\Http\Resources\Worker\JobDetailResource;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
     public function all()
     {
-        $job = Job::all();
+        $job = JobListResource::collection(Job::all()->where('confirmed_status', 'accept'));
         return response()->json([
             'success' => true,
             'message' => 'Get all job data',
@@ -20,7 +22,7 @@ class JobController extends Controller
     
     public function show(int $id)
     {
-        $job = Job::find($id);
+        $job = Job::all()->where('confirmed_status', 'accept')->find($id);
         if ($job == null) {
             return response()->json([
                 'success' => false,
@@ -31,7 +33,7 @@ class JobController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data found',
-            'data' => $job,
+            'data' => new JobDetailResource($job),
         ]);
     }
 }

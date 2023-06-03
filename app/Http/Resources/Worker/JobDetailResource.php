@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Company;
+namespace App\Http\Resources\Worker;
 
-// use App\Helpers\AppFunction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class JobListResource extends JsonResource
+class JobDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +16,20 @@ class JobListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'title' => $this->id,
             'city' => $this->city,
+            'time_type' => $this->time_type,
+            'salary' => $this->salary,
             'company' => [
                 'id' => $this->company->id,
                 'name' => $this->company->name,
                 'location' => $this->company->location,
             ],
+            'gender' => $this->gender,
+            'education' => $this->education,
+            'minimum_age' => $this->minimum_age,
+            'maximum_age' => $this->maximum_age,
+            'description' => $this->description,
             'pkl_status' => booleanConvert($this->pkl_status),
             'confirmed_status' => $this->confirmed_status,
         ];
