@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class WorkerController extends Controller
+class AuthController extends Controller
 {
     public function register(Request $request)
     {
@@ -58,7 +58,7 @@ class WorkerController extends Controller
         if (! $token = auth()->guard('worker')->attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized',
+                'message' => 'Something wrong',
                 'data' => []
             ], 401);
         }
