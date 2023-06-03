@@ -25,8 +25,14 @@ class Job extends Model
         'education',
         'minimum_age',
         'maximum_age',
-        'description'
+        'description',
+        'pkl_status',
+        'confirmed_status',
     ];
+
+    // protected $guarded = [
+    //     'confirmed_status',
+    // ];
 
     public function company()
     {

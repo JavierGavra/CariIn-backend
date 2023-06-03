@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:App\Models\Company,username',
+            'name' => 'required|unique:App\Models\Company,name',
             'email' => 'required|email|unique:App\Models\Company,email',
             'password' => 'required',
             'category' => 'required',
@@ -24,7 +24,7 @@ class AuthController extends Controller
         ]);
 
         $company = Company::create([
-            'username' => $request->username,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'category' => $request->category,
@@ -74,7 +74,7 @@ class AuthController extends Controller
             'data' => [
                 'user' => [
                     'email' => $company->email,
-                    'username' => $company->username,
+                    'name' => $company->name,
                 ],
                 'role' => $company->role,
                 'token' => $token
@@ -89,7 +89,7 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Data found',
             'data' => [
-                'username' => $company->username,
+                'name' => $company->name,
                 'email' => $company->email,
                 'category' => $company->category,
                 'founding_date' => $company->founding_date,

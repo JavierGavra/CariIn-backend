@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Resources\Company;
+namespace App\Http\Resources\Worker;
 
-// use App\Helpers\AppFunction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

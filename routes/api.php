@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\Admin\AuthController as AuthAdminController;
+use App\Http\Controllers\Admin\JobController as JobAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
@@ -34,6 +35,16 @@ Route::group(['prefix' => 'admin'], function () {
     Route::middleware(['middleware' => 'auth:admin'])->group(function () {
         Route::post('/logout', [AuthAdminController::class, 'logout']);
         Route::get('/me', [AuthAdminController::class, 'me']);
+        
+        # Job
+        Route::prefix('job')->controller(JobAdminController::class)->group(function () {
+            Route::get('/', 'all');
+            Route::get('/accepted', 'acceptedList');
+            Route::get('/rejected', 'rejectedList');
+            Route::get('/waiting', 'waitingList');
+            Route::get('/{id}', 'show');
+            Route::post('/{id}/define-confirmation', 'defineConfirmation');
+        });
     });
 });
 
@@ -72,7 +83,9 @@ Route::group(['prefix' => 'company'], function () {
         # job
         Route::prefix('job')->controller(JobCompanyController::class)->group(function () {
             Route::get('/', 'all');
-            // Route::get('/{id}', 'show');
+            Route::get('/accepted', 'acceptedList');
+            Route::get('/rejected', 'rejectedList');
+            Route::get('/{id}', 'show');
             Route::post('/create', 'create');
         });
     });
