@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('gender', ["male", "female", "all"]);
             $table->enum('education', ["smp", "sma", "smk", "all"]);
             $table->integer('minimum_age');
-            $table->integer('maximum_age');
+            $table->integer('maximum_age')->nullable();
             $table->text('description');
             $table->boolean('pkl_status');
             $table->enum('confirmed_status', ["accept", "reject", "waiting"]);

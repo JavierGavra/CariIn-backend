@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Worker;
 
+use App\Helpers\AppFunction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,7 +24,7 @@ class JobListResource extends JsonResource
                 'name' => $this->company->name,
                 'location' => $this->company->location,
             ],
-            'pkl_status' => booleanConvert($this->pkl_status),
+            'pkl_status' => AppFunction::booleanResponse($this->pkl_status),
             'confirmed_status' => $this->confirmed_status,
         ];
     }
