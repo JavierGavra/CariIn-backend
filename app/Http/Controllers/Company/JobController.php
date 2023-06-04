@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Models\Job;
+use App\Helpers\AppFunction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Company\JobListResource;
 use App\Http\Resources\Company\JobDetailResource;
@@ -37,7 +38,7 @@ class JobController extends Controller
             'minimum_age' => $request->minimum_age,
             'maximum_age' => $request->maximum_age,
             'description' => $request->description,
-            'pkl_status' => $request->pkl_status,
+            'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
             'confirmed_status' => 'waiting'
         ]);
         if ($job) {

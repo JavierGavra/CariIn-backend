@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Helpers\AppFunction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,7 +31,7 @@ class JobDetailResource extends JsonResource
             'minimum_age' => $this->minimum_age,
             'maximum_age' => $this->maximum_age,
             'description' => $this->description,
-            'pkl_status' => booleanConvert($this->pkl_status),
+            'pkl_status' => AppFunction::booleanResponse($this->pkl_status),
             'confirmed_status' => $this->confirmed_status,
             'created_at' => $this->created_at
         ];
