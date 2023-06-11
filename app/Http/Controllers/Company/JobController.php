@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    public function create(Request $request)
-    {
+    // Create Job
+    public function create(Request $request) {
         $request->validate([
             'title' => 'required|string',
             'city' => 'required|string',
@@ -56,54 +56,78 @@ class JobController extends Controller
         }
     }
 
-    public function all()
-    {
+    // Job list
+    public function index(Request $request) {
+        $confirmed_status = $request->query('confirmed_status');
         $company = auth()->user();
-        $job = JobListResource::collection($company->jobs);
-        return response()->json([
-            'success' => true,
-            'message' => 'Get all my job data',
-            'data' => $job,
-        ]);
-    }
+        
+        if (isset($confirmed_status)) {
+            if ($confirmed_status == 'accept' or $confirmed_status == 'reject' or $confirmed_status == 'waiting'){
+                $job = JobListResource::collection($company->jobs->where('confirmed_status', $confirmed_status));
+            } else {
+                return redirect()->route('bad-filter');
+            }
+        } else {
+            $job = JobListResource::collection($company->jobs);
+        }
 
-    public function acceptedList()
-    {
-        $company = auth()->user();
-        $job = JobListResource::collection($company->jobs->where('confirmed_status', 'accept'));
         return response()->json([
             'success' => true,
-            'message' => 'Get all my job (accept) data',
+            'message' => 'Get my job data',
             'data' => $job,
         ]);
     }
     
-    public function rejectedList()
-    {
-        $company = auth()->user();
-        $job = JobListResource::collection($company->jobs->where('confirmed_status', 'reject'));
-        return response()->json([
-            'success' => true,
-            'message' => 'Get all my job (reject) data',
-            'data' => $job,
-        ]);
-    }
-    
-    public function show(int $id)
-    {
+    // Detail
+    public function show(int $id) {
         $company = auth()->user();
         $job = $company->jobs->find($id);
-        if ($job == null) {
+
+        if (is_null($job)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data not found',
                 'data' => [],
             ], 404);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data found',
+                'data' => new JobDetailResource($job),
+            ]);
         }
+    }
+
+    // Delete all rejected job
+    public function deleteAllRejected() {
+        $company = auth()->user();
+        $company->jobs->where('confirmed_status', 'reject')->delete();
+
         return response()->json([
             'success' => true,
-            'message' => 'Data found',
-            'data' => new JobDetailResource($job),
+            'message' => 'Successfully deleted all data',
+            'data' => [],
         ]);
+    }
+
+    // Delete job by ID
+    public function deleteById(int $id) {
+        $company = auth()->user();
+        $job = $company->jobs->find($id);
+
+        if (is_null($job)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data not found',
+                'data' => [],
+            ], 404);
+        } else {
+            $job->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully deleted data',
+                'data' => [],
+            ]);
+        }
     }
 }
