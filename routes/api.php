@@ -24,6 +24,7 @@ use App\Http\Controllers\Worker\JobController as JobWorkerController;
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
 Route::get('/unauthenticated', [UtilityController::class, 'unauthenticated'])->name('unauthenticated');
+Route::get('/bad-filter', [UtilityController::class, 'badFilter'])->name('bad-filter');
 
 
 //* >===== Admin =====<
@@ -37,13 +38,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/me', [AuthAdminController::class, 'me']);
         
         # Job
-        Route::prefix('job')->controller(JobAdminController::class)->group(function () {
-            Route::get('/', 'all');
-            Route::get('/accepted', 'acceptedList');
-            Route::get('/rejected', 'rejectedList');
-            Route::get('/waiting', 'waitingList');
+        Route::prefix('jobs')->controller(JobAdminController::class)->group(function () {
+            Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+            Route::prefix('delete')->group(function (){
+                Route::delete('/all-rejected', 'deleteAllRejected');
+                Route::delete('{id}', 'deleteByID');
+            });
         });
     });
 });
@@ -61,7 +63,7 @@ Route::group(['prefix' => 'worker'], function () {
         Route::get('/me', [AuthWorkerController::class, 'me']);
 
         # Job
-        Route::prefix('job')->controller(JobWorkerController::class)->group(function () {
+        Route::prefix('jobs')->controller(JobWorkerController::class)->group(function () {
             Route::get('/', 'all');
             Route::get('/{id}', 'show');
         });
@@ -81,12 +83,14 @@ Route::group(['prefix' => 'company'], function () {
         Route::get('/me', [AuthCompanyController::class, 'me']);
         
         # job
-        Route::prefix('job')->controller(JobCompanyController::class)->group(function () {
-            Route::get('/', 'all');
-            Route::get('/accepted', 'acceptedList');
-            Route::get('/rejected', 'rejectedList');
+        Route::prefix('jobs')->controller(JobCompanyController::class)->group(function () {
+            Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/create', 'create');
+            Route::prefix('delete')->group(function (){
+                Route::delete('/all-rejected', 'deleteAllRejected');
+                Route::delete('{id}', 'deleteByID');
+            });
         });
     });
 });

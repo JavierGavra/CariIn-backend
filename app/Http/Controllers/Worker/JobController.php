@@ -23,17 +23,18 @@ class JobController extends Controller
     public function show(int $id)
     {
         $job = Job::all()->where('confirmed_status', 'accept')->find($id);
-        if ($job == null) {
+        if (is_null($job)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data not found',
                 'data' => [],
             ], 404);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data found',
+                'data' => new JobDetailResource($job),
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'message' => 'Data found',
-            'data' => new JobDetailResource($job),
-        ]);
     }
 }
