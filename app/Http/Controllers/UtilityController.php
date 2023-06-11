@@ -24,4 +24,13 @@ class UtilityController extends Controller
             'data' => [],
         ], 401);
     }
+    
+    public function badFilter()
+    {
+        return response()->json([
+            'success' => false,
+            'message' => "Filter not found",
+            'data' => [],
+        ], 400);
+    }
 }
