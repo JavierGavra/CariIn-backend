@@ -15,7 +15,7 @@ class JobController extends Controller
         $confirmed_status = $request->query('confirmed_status');
 
         if (isset($confirmed_status)) {
-            if ($confirmed_status == 'accept' or $confirmed_status == 'reject' or $confirmed_status == 'waiting'){
+            if ($confirmed_status == 'diterima' or $confirmed_status == 'ditolak' or $confirmed_status == 'menunggu'){
                 $job = JobListResource::collection(Job::where('confirmed_status', $confirmed_status)->get());
             } else {
                 return redirect()->route('bad-filter');
@@ -51,7 +51,7 @@ class JobController extends Controller
 
     // Define confirmation of job
     public function defineConfirmation(Request $request, int $id) {
-        $job = Job::where('confirmed_status', 'waiting')->find($id);
+        $job = Job::where('confirmed_status', 'menunggu')->find($id);
         if (is_null($job)) {
             return response()->json([
                 'success' => false,
@@ -67,13 +67,13 @@ class JobController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Changes saved successfully',
-            'data' => new JobDetailResource($job),
+            'data' => new JobListResource($job),
         ]);
     }
 
     // Delete all rejected job
-    public function deleteAllRejected() {
-        Job::where('confirmed_status', 'reject')->delete();
+    public function deleteAllDitolak() {
+        Job::where('confirmed_status', 'ditolak')->delete();
         return response()->json([
             'success' => true,
             'message' => 'Successfully deleted all data',

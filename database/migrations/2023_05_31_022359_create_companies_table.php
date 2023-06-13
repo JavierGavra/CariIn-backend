@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('category');
+            $table->string('field');
             $table->date('founding_date');
-            $table->enum('user_type', ['Pemilik', 'Pengelola','HRD']);
+            $table->enum('user_type', ['pemilik', 'pengelola','hrd']);
             $table->string('location');
             $table->text('description');
             $table->string('url')->nullable();
