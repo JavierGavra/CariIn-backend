@@ -18,10 +18,10 @@ class JobDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'gender' => $this->gender,
             'company_name' => $this->company->name,
             'company_location' => $this->company->location,
             'job_created' => $this->created_at,
-            'city' => $this->city,
             'time_type' => $this->time_type,
             'salary' => $this->salary,
 
@@ -30,7 +30,6 @@ class JobDetailResource extends JsonResource
                 'time_type' => $this->time_type,
                 'title' => $this->title,
                 'salary' => $this->salary,
-                'gender' => $this->gender,
                 'education' => $this->education,
                 'minimum_age' => $this->minimum_age,
                 'maximum_age' => $this->maximum_age,
@@ -42,6 +41,10 @@ class JobDetailResource extends JsonResource
                 'location' => $this->company->location,
                 'founding_date' => $this->company->founding_date,
                 'employees' => $this->company->employees,
+            ],
+
+            'location' => [
+                'location' => $this->location
             ],
             
             'pkl_status' => AppFunction::booleanResponse($this->pkl_status),

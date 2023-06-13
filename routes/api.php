@@ -43,7 +43,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
             Route::prefix('delete')->group(function (){
-                Route::delete('/all-rejected', 'deleteAllRejected');
+                Route::delete('/all-ditolak', 'deleteAllDitolak');
                 Route::delete('{id}', 'deleteByID');
             });
         });
@@ -88,7 +88,7 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/{id}', 'show');
             Route::post('/create', 'create');
             Route::prefix('delete')->group(function (){
-                Route::delete('/all-rejected', 'deleteAllRejected');
+                Route::delete('/all-ditolak', 'deleteAllDitolak');
                 Route::delete('{id}', 'deleteByID');
             });
         });
