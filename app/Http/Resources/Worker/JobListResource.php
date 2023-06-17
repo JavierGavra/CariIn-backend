@@ -18,7 +18,8 @@ class JobListResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'city' => $this->city,
+            'description' => $this->description,
+            'salary' => $this->salary,
             'company' => [
                 'id' => $this->company->id,
                 'name' => $this->company->name,
@@ -26,6 +27,7 @@ class JobListResource extends JsonResource
             ],
             'pkl_status' => AppFunction::booleanResponse($this->pkl_status),
             'confirmed_status' => $this->confirmed_status,
+            'created_at' => $this->created_at,
         ];
     }
 }

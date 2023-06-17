@@ -43,7 +43,7 @@ class Company extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'category',
+        'field',
         'founding_date',
         'user_type',
         'location',

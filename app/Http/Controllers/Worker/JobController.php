@@ -12,7 +12,7 @@ class JobController extends Controller
 {
     public function all()
     {
-        $job = JobListResource::collection(Job::all()->where('confirmed_status', 'accept'));
+        $job = JobListResource::collection(Job::all()->where('confirmed_status', 'diterima'));
         return response()->json([
             'success' => true,
             'message' => 'Get all job data',

@@ -15,7 +15,7 @@ class JobController extends Controller
     public function create(Request $request) {
         $request->validate([
             'title' => 'required|string',
-            'city' => 'required|string',
+            'location' => 'required|string',
             'time_type' => 'required',
             'salary' => 'required',
             'gender' => 'required',
@@ -29,7 +29,7 @@ class JobController extends Controller
         $company = auth()->user();
         $job = Job::create([
             'title' => $request->title,
-            'city' => $request->city,
+            'location' => $request->location,
             'time_type' => $request->time_type,
             'salary' => $request->salary,
             'company_id' => $company->id,
@@ -39,7 +39,7 @@ class JobController extends Controller
             'maximum_age' => $request->maximum_age,
             'description' => $request->description,
             'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
-            'confirmed_status' => 'waiting'
+            'confirmed_status' => 'menunggu'
         ]);
         if ($job) {
             return response()->json([
@@ -62,7 +62,7 @@ class JobController extends Controller
         $company = auth()->user();
         
         if (isset($confirmed_status)) {
-            if ($confirmed_status == 'accept' or $confirmed_status == 'reject' or $confirmed_status == 'waiting'){
+            if ($confirmed_status == 'diterima' or $confirmed_status == 'ditolak' or $confirmed_status == 'menunggu'){
                 $job = JobListResource::collection($company->jobs->where('confirmed_status', $confirmed_status));
             } else {
                 return redirect()->route('bad-filter');
@@ -99,9 +99,9 @@ class JobController extends Controller
     }
 
     // Delete all rejected job
-    public function deleteAllRejected() {
+    public function deleteAllDitolak() {
         $company = auth()->user();
-        $company->jobs->where('confirmed_status', 'reject')->delete();
+        Job::where('company_id', $company->id)->where('confirmed_status', 'ditolak')->delete();
 
         return response()->json([
             'success' => true,
