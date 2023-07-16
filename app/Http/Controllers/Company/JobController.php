@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Company;
 use App\Models\Job;
 use App\Helpers\AppFunction;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Company\JobListResource;
-use App\Http\Resources\Company\JobDetailResource;
+use App\Http\Resources\Job\JobListResource;
+use App\Http\Resources\Job\JobDetailResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class JobController extends Controller
 {
@@ -23,6 +24,8 @@ class JobController extends Controller
             'minimum_age' => 'required',
             'maximum_age' => 'nullable',
             'description' =>'required',
+            'tags' => 'required|array',
+            'tags.*' => 'exists:tags,id',
             'pkl_status' => 'required'
         ]);
 
@@ -41,6 +44,8 @@ class JobController extends Controller
             'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
             'confirmed_status' => 'menunggu'
         ]);
+        $job->tags()->sync($request->tags);
+
         if ($job) {
             return response()->json([
                 'success' => true,
@@ -101,7 +106,9 @@ class JobController extends Controller
     // Delete all rejected job
     public function deleteAllDitolak() {
         $company = auth()->user();
-        Job::where('company_id', $company->id)->where('confirmed_status', 'ditolak')->delete();
+        $job = Job::where('company_id', $company->id)->where('confirmed_status', 'ditolak');
+        $job->each(function ($job){$job->tags()->detach();});
+        $job->delete();
 
         return response()->json([
             'success' => true,
@@ -122,6 +129,7 @@ class JobController extends Controller
                 'data' => [],
             ], 404);
         } else {
+            $job->tags()->detach();
             $job->delete();
             return response()->json([
                 'success' => true,

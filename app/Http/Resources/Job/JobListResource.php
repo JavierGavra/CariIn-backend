@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace App\Http\Resources\Job;
 
 use App\Helpers\AppFunction;
+use App\Http\Resources\Tag\TagResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,7 @@ class JobListResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'salary' => $this->salary,
+            'tags' => TagResource::collection($this->tags),
             'company' => [
                 'id' => $this->company->id,
                 'name' => $this->company->name,
