@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Job;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\JobListResource;
-use App\Http\Resources\Admin\JobDetailResource;
+use App\Http\Resources\Job\JobListResource;
+use App\Http\Resources\Job\JobDetailResource;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
