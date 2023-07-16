@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Resources\Company;
+namespace App\Http\Resources\Job;
 
 use App\Helpers\AppFunction;
+use App\Http\Resources\Tag\TagResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -33,6 +34,7 @@ class JobDetailResource extends JsonResource
                 'education' => $this->education,
                 'minimum_age' => $this->minimum_age,
                 'maximum_age' => $this->maximum_age,
+                'tags' => TagResource::collection($this->tags),
             ],
 
             'company' => [
