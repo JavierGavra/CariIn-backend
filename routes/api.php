@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AuthController as AuthAdminController;
 use App\Http\Controllers\Admin\JobController as JobAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
+use App\Http\Controllers\Company\TagController as TagCompanyController;
+use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 
@@ -15,6 +17,7 @@ Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
 Route::get('/unauthenticated', [UtilityController::class, 'unauthenticated'])->name('unauthenticated');
 Route::get('/bad-filter', [UtilityController::class, 'badFilter'])->name('bad-filter');
 Route::post('/refresh-token', [RefreshTokenController::class, 'refreshToken']);
+Route::pattern('id', '[0-9]+');
 
 
 //* >===== Admin =====<
@@ -73,7 +76,7 @@ Route::group(['prefix' => 'company'], function () {
         Route::get('/logout', [AuthCompanyController::class, 'logout']);
         Route::get('/me', [AuthCompanyController::class, 'me']);
         
-        # job
+        # Job
         Route::prefix('jobs')->controller(JobCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
@@ -82,6 +85,15 @@ Route::group(['prefix' => 'company'], function () {
                 Route::delete('/all-ditolak', 'deleteAllDitolak');
                 Route::delete('{id}', 'deleteByID');
             });
+            
+            # Tag
+            Route::get('/available-tags', [TagCompanyController::class, 'availableTags']);
+        });
+
+        # Worker
+        Route::prefix('workers')->controller(WorkerCompanyController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
         });
     });
 });
