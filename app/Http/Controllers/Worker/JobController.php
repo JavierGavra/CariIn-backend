@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    public function all()
+    public function index()
     {
         $job = JobListResource::collection(Job::all()->where('confirmed_status', 'diterima'));
         return response()->json([

@@ -11,12 +11,14 @@ use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
+use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
 Route::get('/unauthenticated', [UtilityController::class, 'unauthenticated'])->name('unauthenticated');
 Route::get('/bad-filter', [UtilityController::class, 'badFilter'])->name('bad-filter');
 Route::post('/refresh-token', [RefreshTokenController::class, 'refreshToken']);
+
 Route::pattern('id', '[0-9]+');
 
 
@@ -58,7 +60,13 @@ Route::group(['prefix' => 'worker'], function () {
 
         # Job
         Route::prefix('jobs')->controller(JobWorkerController::class)->group(function () {
-            Route::get('/', 'all');
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+        });
+        
+        # Job application
+        Route::prefix('job-applications')->controller(JobApplicationWorkerController::class)->group(function () {
+            Route::get('/', 'index');
             Route::get('/{id}', 'show');
         });
     });
