@@ -5,6 +5,7 @@ use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\RefreshTokenController;
 use App\Http\Controllers\Admin\AuthController as AuthAdminController;
 use App\Http\Controllers\Admin\JobController as JobAdminController;
+use App\Http\Controllers\Admin\TagController as TagAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
@@ -41,6 +42,13 @@ Route::group(['prefix' => 'admin'], function () {
             Route::prefix('delete')->group(function (){
                 Route::delete('/all-ditolak', 'deleteAllDitolak');
                 Route::delete('{id}', 'deleteByID');
+            });
+
+            # Tag
+            Route::prefix('available-tags')->controller(TagAdminController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/create', 'create');
+                Route::delete('/delete/{id}', 'delete');
             });
         });
     });
