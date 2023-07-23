@@ -36,7 +36,7 @@ class JobApplicationController extends Controller
     
     public function show(int $id) {
         $company = auth()->user();
-        $jobApplication = JobApplication::whereIn('job_id', $company->jobs->pluck('id'))->get()->find($id);
+        $jobApplication = JobApplication::whereIn('job_id', $company->jobs->pluck('id'))->find($id);
 
         if (is_null($jobApplication)) {
             return HttpStatus::code404('Data not found');  
