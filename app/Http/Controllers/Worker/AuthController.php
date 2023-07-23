@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Worker;
 
 use App\Models\Worker;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Worker\WorkerDetailResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -94,15 +95,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data found',
-            'data' => [
-                'username' => $worker->username,
-                'email' => $worker->email,
-                'gender' => $worker->gender,
-                'phone_number' => $worker->phone_number,
-                'address' => $worker->address,
-                'born_date' => $worker->born_date,
-                'role' => $worker->role,
-            ]
+            'data' => new WorkerDetailResource($worker),
         ]);
     }
 }

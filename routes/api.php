@@ -5,18 +5,22 @@ use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\RefreshTokenController;
 use App\Http\Controllers\Admin\AuthController as AuthAdminController;
 use App\Http\Controllers\Admin\JobController as JobAdminController;
+use App\Http\Controllers\Admin\TagController as TagAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
+use App\Http\Controllers\Company\JobApplicationController as JobApplicationCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
+use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
 Route::get('/unauthenticated', [UtilityController::class, 'unauthenticated'])->name('unauthenticated');
 Route::get('/bad-filter', [UtilityController::class, 'badFilter'])->name('bad-filter');
 Route::post('/refresh-token', [RefreshTokenController::class, 'refreshToken']);
+
 Route::pattern('id', '[0-9]+');
 
 
@@ -39,6 +43,13 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::delete('/all-ditolak', 'deleteAllDitolak');
                 Route::delete('{id}', 'deleteByID');
             });
+
+            # Tag
+            Route::prefix('available-tags')->controller(TagAdminController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/create', 'create');
+                Route::delete('/delete/{id}', 'delete');
+            });
         });
     });
 });
@@ -55,11 +66,18 @@ Route::group(['prefix' => 'worker'], function () {
         Route::get('/refresh-token', [AuthWorkerController::class, 'refreshToken']);
         Route::get('/logout', [AuthWorkerController::class, 'logout']);
         Route::get('/me', [AuthWorkerController::class, 'me']);
-
+        
         # Job
         Route::prefix('jobs')->controller(JobWorkerController::class)->group(function () {
-            Route::get('/', 'all');
+            Route::get('/', 'index');
             Route::get('/{id}', 'show');
+        });
+        
+        # Job application
+        Route::prefix('job-applications')->controller(JobApplicationWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('/create', 'create');
         });
     });
 });
@@ -89,11 +107,18 @@ Route::group(['prefix' => 'company'], function () {
             # Tag
             Route::get('/available-tags', [TagCompanyController::class, 'availableTags']);
         });
-
+        
         # Worker
         Route::prefix('workers')->controller(WorkerCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+        });
+        
+        # Job application
+        Route::prefix('job-applications')->controller(JobApplicationCompanyController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('/{id}/define-confirmation', 'defineConfirmation');
         });
     });
 });
