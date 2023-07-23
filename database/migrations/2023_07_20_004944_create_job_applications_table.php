@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('job_applications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('job_id');
+            $table->foreignId('worker_id');
+            $table->text('description');
+            $table->enum('confirmed_status', ["diterima", "ditolak", "menunggu"]);
             $table->timestamps();
         });
     }

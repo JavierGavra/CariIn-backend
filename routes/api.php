@@ -9,6 +9,7 @@ use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
+use App\Http\Controllers\Company\JobApplicationController as JobApplicationCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
@@ -57,7 +58,7 @@ Route::group(['prefix' => 'worker'], function () {
         Route::get('/refresh-token', [AuthWorkerController::class, 'refreshToken']);
         Route::get('/logout', [AuthWorkerController::class, 'logout']);
         Route::get('/me', [AuthWorkerController::class, 'me']);
-
+        
         # Job
         Route::prefix('jobs')->controller(JobWorkerController::class)->group(function () {
             Route::get('/', 'index');
@@ -68,6 +69,7 @@ Route::group(['prefix' => 'worker'], function () {
         Route::prefix('job-applications')->controller(JobApplicationWorkerController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::post('/create', 'create');
         });
     });
 });
@@ -97,9 +99,15 @@ Route::group(['prefix' => 'company'], function () {
             # Tag
             Route::get('/available-tags', [TagCompanyController::class, 'availableTags']);
         });
-
+        
         # Worker
         Route::prefix('workers')->controller(WorkerCompanyController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+        });
+        
+        # Job application
+        Route::prefix('job-applications')->controller(JobApplicationCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
         });
