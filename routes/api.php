@@ -118,6 +118,7 @@ Route::group(['prefix' => 'company'], function () {
         Route::prefix('job-applications')->controller(JobApplicationCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::post('/{id}/define-confirmation', 'defineConfirmation');
         });
     });
 });

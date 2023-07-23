@@ -48,4 +48,29 @@ class JobApplicationController extends Controller
             ]);
         }
     }
+    
+    public function defineConfirmation(Request $request, int $id) {
+        $company = auth()->user();
+        $jobApplication = JobApplication::whereIn('job_id', $company->jobs->pluck('id'))
+        ->where('confirmed_status', 'menunggu')
+        ->find($id);
+        if (is_null($jobApplication)) {
+            return HttpStatus::code404('Data not found');  
+        }
+
+        $confirmedStatusValidate = ['diterima', 'ditolak']; 
+        $request->validate(['confirmed_status' => 'required']);
+        if(!in_array($request->confirmed_status, $confirmedStatusValidate)) {
+            return HttpStatus::code400();
+        }
+
+        $jobApplication->confirmed_status = $request->confirmed_status;
+        $jobApplication->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Changes saved successfully',
+            'data' => new JobApplicationDetailResource($jobApplication),
+        ]);
+    }
 }
