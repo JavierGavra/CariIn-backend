@@ -65,21 +65,22 @@ class JobController extends Controller
     public function index(Request $request) {
         $confirmed_status = $request->query('confirmed_status');
         $company = auth()->user();
+        $jobs = $company->jobs;
+
+        $confirmedStatusValidate = ['diterima', 'ditolak', 'menunggu'];
         
         if (isset($confirmed_status)) {
-            if ($confirmed_status == 'diterima' or $confirmed_status == 'ditolak' or $confirmed_status == 'menunggu'){
-                $job = JobListResource::collection($company->jobs->where('confirmed_status', $confirmed_status));
+            if (in_array($confirmed_status, $confirmedStatusValidate)){
+                $jobs = $jobs->where('confirmed_status', $confirmed_status);
             } else {
                 return redirect()->route('bad-filter');
             }
-        } else {
-            $job = JobListResource::collection($company->jobs);
         }
 
         return response()->json([
             'success' => true,
             'message' => 'Get my job data',
-            'data' => $job,
+            'data' => JobListResource::collection($jobs),
         ]);
     }
     
