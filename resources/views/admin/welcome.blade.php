@@ -7,6 +7,8 @@
     <title>Admin Cariin</title>
 </head>
 <body>
-    <h1>INI ADMIN</h1>
+    <center>
+        <h1>INI ADMIN</h1>
+    </center>
 </body>
 </html>

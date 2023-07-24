@@ -33,4 +33,9 @@ class UtilityController extends Controller
             'data' => [],
         ], 400);
     }
+
+    public function adminTest()
+    {
+        return view('admin.welcome');
+    }
 }
