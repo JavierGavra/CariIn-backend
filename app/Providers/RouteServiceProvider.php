@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            Route::domain('imadmin.cariin.test')
+            Route::domain('imadmin.' .config('app.short_url'))
                 ->middleware('web')
                 ->group(base_path('routes/web_admin.php'));
 
