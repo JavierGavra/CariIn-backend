@@ -22,7 +22,7 @@ class JobController extends Controller
     
     public function show(int $id)
     {
-        $job = Job::all()->where('confirmed_status', 'accept')->find($id);
+        $job = Job::all()->where('confirmed_status', 'diterima')->find($id);
         if (is_null($job)) {
             return response()->json([
                 'success' => false,
