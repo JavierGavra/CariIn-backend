@@ -8,7 +8,6 @@
     <title>CariIn</title>
 </head>
 <body>
-    
     <section> 
         <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
         <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
@@ -23,23 +22,24 @@
         <div class="signin"> 
             <div class="content"> 
                 <h2>Admin</h2> 
-                <div class="form"> 
-                <div class="inputBox"> 
-                    <input type="text" required> <i>Email</i> 
-                </div> 
-                <div class="inputBox"> 
-                    <input type="password" required> <i>Password</i> 
-                </div> 
-                {{-- <div class="links">
-                    <a href="#">Signup</a> 
-                </div>  --}}
-                <br><br>
-                <div class="inputBox"> 
-                    <input type="submit" value="Login"> 
-                </div> 
+                <form class="form" method="post" action="/auth/login">
+                    @csrf
+                    <div class="inputBox"> 
+                        <input name="email" id="email" type="email" required> <i>Email</i> 
+                    </div> 
+                    <div class="inputBox"> 
+                        <input name="password" id="password" type="password" required> <i>Password</i> 
+                    </div> 
+                    {{-- <div class="links">
+                        <a href="#">Signup</a> 
+                    </div>  --}}
+                    <br><br>
+                    <div class="inputBox"> 
+                        <input type="submit" value="Login"> 
+                    </div> 
+                </form>
             </div> 
         </div> 
-    </div> 
     </section> <!-- partial --> 
 </body>
 </html>

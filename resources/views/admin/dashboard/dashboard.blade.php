@@ -8,7 +8,7 @@
 </head>
 <body>
     <center>
-        <h1>INI ADMIN</h1>
+        <h1>INI Home</h1>
         <li><form action="/auth/logout" method="POST">
             @csrf
             <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-in-right"></i>Logout</button>
