@@ -11,6 +11,10 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     public function index() {
+        if (auth()->guard('admin')->check()) {
+            return redirect('/dashboard');
+        }
+
         return view('admin.auth.login');
     }
 
@@ -48,43 +52,27 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+        $credentials = $request->validate([
+            'email'=>'required|email:dns',
+            'password'=>'required'
         ]);
 
-        $admin = Admin::where('email', $request->email)->first();
-        $credentials = request(['email', 'password']);
-        if (! $token = auth()->guard('admin')->attempt($credentials)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-                'data' => []
-            ], 401);
+        if (auth()->guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/test');
         }
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Successful login',
-            'data' => [
-                'user' => [
-                    'email' => $admin->email,
-                    'username' => $admin->username,
-                ],
-                'role' => $admin->role,
-                'token' => $token
-            ]
-        ]);
+
+        return back()->with('loginError', 'Login failed!');
     }
 
-    public function logout()
+    public function logout() 
     {
-        auth()->logout();
-        return response()->json([
-            'success' => true,
-            'message' => 'User logout successfully',
-            'data' => []
-        ]);
+        auth()->guard('admin')->logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/');
     }
 
     public function me()
