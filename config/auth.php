@@ -45,7 +45,7 @@ return [
             'provider' => 'workers',
         ],
         'admin' => [
-            'driver' => 'session',
+            'driver' => 'jwt',
             'provider' => 'admins',
         ],
         'company' => [

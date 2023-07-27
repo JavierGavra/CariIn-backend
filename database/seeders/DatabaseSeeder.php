@@ -3,12 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Company;
 use App\Models\Job;
 use App\Models\Tag;
-use App\Models\Worker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,8 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        # Worker
-        Worker::create([
+        # Admin
+        Admin::create([
             "username"=> "Jaraganaya",
             "email"=> "gavra@gmail.com",
             "password"=> Hash::make("gavra12345"),
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
             "born_date"=> "2006-09-19",
             "role"=> "worker",
         ]);
-        Worker::create([
+        Admin::create([
             "username"=> "Spacehooman_",
             "email"=> "vitto@gmail.com",
             "password"=> Hash::make("vitto12345"),
@@ -36,7 +37,7 @@ class DatabaseSeeder extends Seeder
             "born_date"=> "2006-01-28",
             "role"=> "worker",
         ]);
-        Worker::create([
+        Admin::create([
             "username"=> "Firdan.Az_",
             "email"=> "firdan@gmail.com",
             "password"=> Hash::make("firdan12345"),
@@ -45,7 +46,7 @@ class DatabaseSeeder extends Seeder
             "born_date"=> "2006-02-26",
             "role"=> "worker",
         ]);
-        Worker::create([
+        Admin::create([
             "username"=> "Ndhf.arq_",
             "email"=> "nadhif@gmail.com",
             "password"=> Hash::make("nadhif12345"),
