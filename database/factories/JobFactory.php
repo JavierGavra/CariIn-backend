@@ -19,6 +19,8 @@ class JobFactory extends Factory
     {
         return [
             'title' => fake()->jobTitle(),
+            'cover_image' => 'images/job/cover/cover.png',
+            'backdrop_image' => 'images/job/backdrop/backdrop.png',
             'location' => fake()->address(),
             'time_type' => fake()->randomElement(['full time', 'part time']),
             'salary' => 2000000,

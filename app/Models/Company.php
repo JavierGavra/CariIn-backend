@@ -45,6 +45,7 @@ class Company extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'profile_image',
         'field',
         'founding_date',
         'user_type',

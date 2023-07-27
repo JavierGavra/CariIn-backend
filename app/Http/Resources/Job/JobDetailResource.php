@@ -19,6 +19,8 @@ class JobDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'cover_image' => $this->cover_image,
+            'backdrop_image' => $this->backdrop_image,
             'gender' => $this->gender,
             'company_name' => $this->company->name,
             'company_location' => $this->company->location,

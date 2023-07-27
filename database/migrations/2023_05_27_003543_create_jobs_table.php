@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('cover_image');
+            $table->string('backdrop_image');
             $table->string('location');
             $table->enum('time_type', ['full time', 'part time']);
             $table->bigInteger('salary');
