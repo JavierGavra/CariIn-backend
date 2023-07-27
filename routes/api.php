@@ -27,7 +27,7 @@ Route::pattern('id', '[0-9]+');
 //* >===== Admin =====<
 Route::group(['prefix' => 'admin'], function () {
     # Auth pt. 1
-    Route::post('/register', [AuthAdminController::class, 'register']);
+    // Route::post('/register', [AuthAdminController::class, 'register']);
     Route::post('/login', [AuthAdminController::class, 'login']);
     
     Route::middleware(['middleware' => 'auth:admin'])->group(function () {

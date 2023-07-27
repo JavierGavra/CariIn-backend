@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('profile_image')->nullable();
             $table->string('field');
             $table->date('founding_date');
             $table->enum('user_type', ['pemilik', 'pengelola','hrd']);

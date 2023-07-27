@@ -89,6 +89,7 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Data found',
             'data' => [
+                'id' => $company->id,
                 'name' => $company->name,
                 'email' => $company->email,
                 'field' => $company->field,

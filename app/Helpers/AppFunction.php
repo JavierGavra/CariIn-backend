@@ -31,4 +31,9 @@ class AppFunction{
         $bornDate = substr($bornDate, 0, 4);
         return $currentDate - $bornDate;
     }
+
+    //* get image name
+    public static function getImageName($image) {
+        return time() . '_' . str_replace(' ', '_', $image->getClientOriginalName());
+    }
 }

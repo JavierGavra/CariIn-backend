@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Job\JobListResource;
 use App\Http\Resources\Job\JobDetailResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class JobController extends Controller
@@ -16,6 +17,8 @@ class JobController extends Controller
     public function create(Request $request) {
         $request->validate([
             'title' => 'required|string',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'backdrop_image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
             'location' => 'required|string',
             'time_type' => 'required',
             'salary' => 'required',
@@ -30,8 +33,14 @@ class JobController extends Controller
         ]);
 
         $company = auth()->user();
+        $coverImagePath = 'images/job/cover';
+        $backdropImagePath ='images/job/backdrop';
+        $coverImageName = AppFunction::getImageName($request->file('cover_image'));
+        $backdropImageName = AppFunction::getImageName($request->file('backdrop_image'));
         $job = Job::create([
             'title' => $request->title,
+            'cover_image' => $coverImagePath.'/'.$coverImageName,
+            'backdrop_image' => $backdropImagePath.'/'.$backdropImageName,
             'location' => $request->location,
             'time_type' => $request->time_type,
             'salary' => $request->salary,
@@ -44,7 +53,10 @@ class JobController extends Controller
             'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
             'confirmed_status' => 'menunggu'
         ]);
+        $request->file('cover_image')->storeAs($coverImagePath, $coverImageName);
+        $request->file('backdrop_image')->storeAs($backdropImagePath, $backdropImageName);
         $job->tags()->sync($request->tags);
+
 
         if ($job) {
             return response()->json([
@@ -130,6 +142,8 @@ class JobController extends Controller
                 'data' => [],
             ], 404);
         } else {
+            Storage::delete($job->cover_image);
+            Storage::delete($job->backdrop_image);
             $job->tags()->detach();
             $job->delete();
             return response()->json([
