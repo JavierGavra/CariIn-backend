@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Company;
 
+use App\Helpers\AppFunction;
 use App\Models\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,25 +17,41 @@ class AuthController extends Controller
             'name' => 'required|unique:App\Models\Company,name',
             'email' => 'required|email|unique:App\Models\Company,email',
             'password' => 'required',
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'field' => 'required',
             'founding_date' => 'required',
             'user_type' => 'required',
             'location' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'outside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'inside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+        $profileImagePath = 'images/job/profile';
+        $outsideImagePath ='images/job/outside';
+        $insideImagePath ='images/job/inside';
+        $profileImageName = AppFunction::getImageName($request->file('profile_image'));
+        $outsideImageName = AppFunction::getImageName($request->file('outside_image'));
+        $insideImageName = AppFunction::getImageName($request->file('inside_image'));
 
         $company = Company::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'profile_image' => $profileImagePath.'/'.$profileImageName,
             'field' => $request->field,
             'founding_date' => $request->founding_date,
             'user_type' => $request->user_type,
             'location' => $request->location,
             'description' => $request->description,
+            'outside_image' => $outsideImagePath.'/'.$outsideImageName,
+            'inside_image' => $insideImagePath.'/'.$insideImageName,
             'employees' => 0,
+            'confirmed_status' => 'menunggu',
             'role' => 'company'
         ]);
+        $request->file('profile_image')->storeAs($profileImagePath, $profileImageName);
+        $request->file('outside_image')->storeAs($outsideImagePath, $outsideImageName);
+        $request->file('inside_image')->storeAs($insideImagePath, $insideImageName);
 
         if ($company) {
             return response()->json([

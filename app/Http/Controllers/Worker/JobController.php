@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App\Helpers\HttpStatus;
 use App\Models\Job;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Job\JobListResource;
@@ -10,25 +11,33 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $job = JobListResource::collection(Job::all()->where('confirmed_status', 'diterima'));
+        $jobs = Job::whereNotIn('confirmed_status', ['ditolak'])->get();
+        $confirmed_status = $request->query('confirmed_status');
+
+        $confirmedStatusValidate = ['belum_terverifikasi', 'terverifikasi'];
+
+        if (isset($confirmed_status)) {
+            if (in_array($confirmed_status, $confirmedStatusValidate)) {
+                $jobs = $jobs->where('confirmed_status', $confirmed_status);
+            } else {
+                return redirect()->route('bad-filter');
+            }
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Get all job data',
-            'data' => $job,
+            'data' => JobListResource::collection($jobs),
         ]);
     }
     
     public function show(int $id)
     {
-        $job = Job::all()->where('confirmed_status', 'diterima')->find($id);
+        $job = Job::all()->whereNotIn('confirmed_status', ['ditolak'])->find($id);
         if (is_null($job)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data not found',
-                'data' => [],
-            ], 404);
+            return HttpStatus::code404('Data not found');
         } else {
             return response()->json([
                 'success' => true,

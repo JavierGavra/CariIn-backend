@@ -57,7 +57,7 @@ class JobApplicationController extends Controller
         $worker = auth()->user();
         $job = Job::findOrFail($request->job_id);
 
-        if ($job->confirmed_status != 'diterima') {
+        if ($job->confirmed_status == 'ditolak') {
             return HttpStatus::code422('This job is not accepted by the admin');
         }   
         if ($worker->jobApplications->contains('job_id', $request->job_id)) {
