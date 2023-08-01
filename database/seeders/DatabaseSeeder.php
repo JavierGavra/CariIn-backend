@@ -61,24 +61,32 @@ class DatabaseSeeder extends Seeder
             'name' => 'Google',
             'email' => 'google@gmail.com',
             'password' => Hash::make('password'),
+            'profile_image' => 'images/company/profile/google.png',
             'field' => 'Teknologi',
             'founding_date' => '2006-03-15',
             'user_type' => 'hrd',
             'location' => 'California, US',
             'description' => 'Google LLC adalah sebuah perusahaan multinasional Amerika Serikat yang berkekhususan pada jasa dan produk Internet.',
+            'inside_image' => 'images/company/inside/google.png',
+            'outside_image' => 'images/company/outside/google.jpg',
             'employees' => 0,
+            'confirmed_status' => 'menunggu',
             'role' => 'company'
         ]);
         Company::create([
             'name' => 'Facebook',
             'email' => 'facebook@gmail.com',
             'password' => Hash::make('password'),
+            'profile_image' => 'images/company/profile/facebook.png',
             'field' => 'Teknologi',
             'founding_date' => '2006-03-15',
             'user_type' => 'hrd',
             'location' => 'California, US',
             'description' => 'Facebook Inc. adalah sebuah layanan jejaring sosial berkantor pusat di Menlo Park, California, Amerika Serikat yang diluncurkan pada bulan Februari 2004.',
+            'inside_image' => 'images/company/inside/facebook.png',
+            'outside_image' => 'images/company/outside/facebook.jpg',
             'employees' => 0,
+            'confirmed_status' => 'menunggu',
             'role' => 'company'
         ]);
 

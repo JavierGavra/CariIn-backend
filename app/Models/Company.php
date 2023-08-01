@@ -42,7 +42,7 @@ class Company extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'name', 
         'email',
         'password',
         'profile_image',
@@ -51,9 +51,14 @@ class Company extends Authenticatable implements JWTSubject
         'user_type',
         'location',
         'description',
-        'employees',
+        'outdoor_image',
+        'indoor_image',
         'url',
-        'role'
+        'inside_image',
+        'outside_image',
+        'employees',
+        'confirmed_status',
+        'role',
     ];
 
     /**
