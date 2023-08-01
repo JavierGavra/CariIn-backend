@@ -31,7 +31,7 @@ class JobFactory extends Factory
             'maximum_age' => fake()->numberBetween(30, 40),
             'description' => fake()->paragraph(),
             'pkl_status' => fake()->randomElement([0, 1]),
-            'confirmed_status' => 'menunggu',
+            'confirmed_status' => 'belum_terverifikasi',
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HttpStatus;
 use App\Models\Job;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Job\JobListResource;
@@ -15,7 +16,7 @@ class JobController extends Controller
         $confirmed_status = $request->query('confirmed_status');
         $jobs = Job::all();
 
-        $confirmedStatusValidate = ['diterima', 'ditolak', 'menunggu'];
+        $confirmedStatusValidate = ['belum_terverifikasi', 'terverifikasi', 'ditolak'];
 
         if (isset($confirmed_status)) {
             if (in_array($confirmed_status, $confirmedStatusValidate)){
@@ -36,11 +37,7 @@ class JobController extends Controller
     public function show(int $id) {
         $job = Job::find($id);
         if (is_null($job)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data not found',
-                'data' => [],
-            ], 404);
+            return HttpStatus::code404('Data not found');
         } else {
             return response()->json([
                 'success' => true,
@@ -52,13 +49,9 @@ class JobController extends Controller
 
     // Define confirmation of job
     public function defineConfirmation(Request $request, int $id) {
-        $job = Job::where('confirmed_status', 'menunggu')->find($id);
+        $job = Job::find($id);
         if (is_null($job)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data not found',
-                'data' => [],
-            ], 404);
+            return HttpStatus::code404('Data not found');
         }
 
         $request->validate(['confirmed_status' => 'required']);
@@ -86,11 +79,7 @@ class JobController extends Controller
     public function deleteById(int $id) {
         $job = Job::find($id);
         if (is_null($job)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data not found',
-                'data' => [],
-            ], 404);
+            return HttpStatus::code404('Data not found');
         } else {
             $job->delete();
             return response()->json([

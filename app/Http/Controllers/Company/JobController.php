@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Models\Job;
 use App\Helpers\AppFunction;
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Job\JobListResource;
 use App\Http\Resources\Job\JobDetailResource;
@@ -51,7 +52,7 @@ class JobController extends Controller
             'maximum_age' => $request->maximum_age,
             'description' => $request->description,
             'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
-            'confirmed_status' => 'menunggu'
+            'confirmed_status' => 'belum terverifikasi'
         ]);
         $request->file('cover_image')->storeAs($coverImagePath, $coverImageName);
         $request->file('backdrop_image')->storeAs($backdropImagePath, $backdropImageName);
@@ -79,7 +80,7 @@ class JobController extends Controller
         $company = auth()->user();
         $jobs = $company->jobs;
 
-        $confirmedStatusValidate = ['diterima', 'ditolak', 'menunggu'];
+        $confirmedStatusValidate = ['belum_terverifikasi', 'terverifikasi', 'ditolak'];
         
         if (isset($confirmed_status)) {
             if (in_array($confirmed_status, $confirmedStatusValidate)){
@@ -102,11 +103,7 @@ class JobController extends Controller
         $job = $company->jobs->find($id);
 
         if (is_null($job)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data not found',
-                'data' => [],
-            ], 404);
+            return HttpStatus::code404('Data not found');
         } else {
             return response()->json([
                 'success' => true,
@@ -136,11 +133,7 @@ class JobController extends Controller
         $job = $company->jobs->find($id);
 
         if (is_null($job)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data not found',
-                'data' => [],
-            ], 404);
+            return HttpStatus::code404('Data not found');
         } else {
             Storage::delete($job->cover_image);
             Storage::delete($job->backdrop_image);
