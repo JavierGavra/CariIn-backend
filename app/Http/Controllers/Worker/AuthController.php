@@ -19,7 +19,8 @@ class AuthController extends Controller
             'password' => 'required',
             'gender' => 'required',
             'phone_number' => 'required|unique:App\Models\Worker,phone_number',
-            'born_date' => 'required'
+            'born_date' => 'required',
+            'address' => 'required'
         ]);
 
         $worker = Worker::create([
@@ -29,6 +30,7 @@ class AuthController extends Controller
             'gender' => $request->gender,
             'phone_number' => $request->phone_number,
             'born_date' => $request->born_date,
+            'address' => $request->address,
             'role' => 'worker'
         ]);
 

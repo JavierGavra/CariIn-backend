@@ -12,9 +12,11 @@ use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
 use App\Http\Controllers\Company\JobApplicationController as JobApplicationCompanyController;
+use App\Http\Controllers\Company\RecruitWorkerController as RecruitWorkerCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
+use App\Http\Controllers\Worker\RecruitWorkerController as RecruitWorkerWorkerController;
 
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
@@ -87,6 +89,13 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/{id}', 'show');
             Route::post('/create', 'create');
         });
+
+        # Recruit worker
+        Route::prefix('recruit-workers')->controller(RecruitWorkerWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('/{id}/send-reply', 'sendReply');
+        });
     });
 });
 
@@ -99,6 +108,7 @@ Route::group(['prefix' => 'company'], function () {
     
     Route::middleware(['middleware' => 'auth:company'])->group(function () {
         # Auth pt.2
+        Route::post('/fill-data', [AuthCompanyController::class, 'fillData']);
         Route::get('/logout', [AuthCompanyController::class, 'logout']);
         Route::get('/me', [AuthCompanyController::class, 'me']);
         
@@ -127,6 +137,13 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+        });
+        
+        # Recruit worker
+        Route::prefix('recruit-workers')->controller(RecruitWorkerCompanyController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('/create', 'create');
         });
     });
 });
