@@ -12,18 +12,17 @@ use Illuminate\Http\Request;
 class CompanyController extends Controller
 {
     public function index(Request $request) {
+        $companies = Company::all();
         $confirmed_status = $request->query('confirmed_status');
         
         $confirmedStatusValidate = ['menunggu', 'diterima', 'ditolak', 'diblokir'];
 
         if (isset($confirmed_status)) {
             if (in_array($confirmed_status, $confirmedStatusValidate)) {
-                $companies = Company::where('confirmed_status', $confirmed_status)->get();
+                $companies = $companies->where('confirmed_status', $confirmed_status);
             } else {
                 return redirect()->route('bad-filter');
             }
-        } else {
-            $companies = Company::all();
         }
 
         return response()->json([

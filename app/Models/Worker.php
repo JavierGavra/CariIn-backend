@@ -64,5 +64,10 @@ class Worker extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(JobApplication::class);
     }
+    
+    public function recruitWorkers(): HasMany
+    {
+        return $this->hasMany(RecruitWorker::class);
+    }
 }
 

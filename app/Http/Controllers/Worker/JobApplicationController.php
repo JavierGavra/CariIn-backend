@@ -58,7 +58,7 @@ class JobApplicationController extends Controller
         $job = Job::findOrFail($request->job_id);
 
         if ($job->confirmed_status == 'ditolak') {
-            return HttpStatus::code422('This job is not accepted by the admin');
+            return HttpStatus::code422('This job is not verified by the admin');
         }   
         if ($worker->jobApplications->contains('job_id', $request->job_id)) {
             return HttpStatus::code409('Job application already exist for this user');
