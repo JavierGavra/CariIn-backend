@@ -6,7 +6,6 @@ use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\JobApplication\company\JobApplicationListResource;
 use App\Http\Resources\JobApplication\JobApplicationDetailResource;
-use App\Models\Job;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 
