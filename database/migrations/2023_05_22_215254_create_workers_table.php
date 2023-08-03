@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->string('backdrop_image')->nullable();
             $table->enum('gender', ["pria", "wanita"]);
-            $table->string('phone_number')->unique();
-            $table->text('address')->nullable();
+            $table->string('phone_number');
+            $table->text('address');
             $table->date('born_date');
             $table->text('description')->nullable();
             $table->string('role', 10);
