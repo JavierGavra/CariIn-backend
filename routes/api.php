@@ -108,6 +108,7 @@ Route::group(['prefix' => 'company'], function () {
     
     Route::middleware(['middleware' => 'auth:company'])->group(function () {
         # Auth pt.2
+        Route::post('/fill-data', [AuthCompanyController::class, 'fillData']);
         Route::get('/logout', [AuthCompanyController::class, 'logout']);
         Route::get('/me', [AuthCompanyController::class, 'me']);
         

@@ -17,41 +17,17 @@ class AuthController extends Controller
             'name' => 'required|unique:App\Models\Company,name',
             'email' => 'required|email|unique:App\Models\Company,email',
             'password' => 'required',
-            'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'field' => 'required',
-            'founding_date' => 'required',
-            'user_type' => 'required',
-            'location' => 'required',
-            'description' => 'required',
-            'outside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'inside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-        $profileImagePath = 'images/job/profile';
-        $outsideImagePath ='images/job/outside';
-        $insideImagePath ='images/job/inside';
-        $profileImageName = AppFunction::getImageName($request->file('profile_image'));
-        $outsideImageName = AppFunction::getImageName($request->file('outside_image'));
-        $insideImageName = AppFunction::getImageName($request->file('inside_image'));
-
         $company = Company::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'profile_image' => $profileImagePath.'/'.$profileImageName,
             'field' => $request->field,
-            'founding_date' => $request->founding_date,
-            'user_type' => $request->user_type,
-            'location' => $request->location,
-            'description' => $request->description,
-            'outside_image' => $outsideImagePath.'/'.$outsideImageName,
-            'inside_image' => $insideImagePath.'/'.$insideImageName,
             'employees' => 0,
             'confirmed_status' => 'menunggu',
             'role' => 'company'
         ]);
-        $request->file('profile_image')->storeAs($profileImagePath, $profileImageName);
-        $request->file('outside_image')->storeAs($outsideImagePath, $outsideImageName);
-        $request->file('inside_image')->storeAs($insideImagePath, $insideImageName);
 
         if ($company) {
             return response()->json([
@@ -97,6 +73,53 @@ class AuthController extends Controller
                 'token' => $token
             ]
         ]);
+    }
+
+    public function fillData(Request $request)
+    {
+        $company = Company::find(auth()->user()->id);
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'founding_date' => 'required',
+            'user_type' => 'required',
+            'location' => 'required',
+            'description' => 'required',
+            'outside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'inside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $profileImagePath = 'images/job/profile';
+        $outsideImagePath ='images/job/outside';
+        $insideImagePath ='images/job/inside';
+        $profileImageName = AppFunction::getImageName($request->file('profile_image'));
+        $outsideImageName = AppFunction::getImageName($request->file('outside_image'));
+        $insideImageName = AppFunction::getImageName($request->file('inside_image'));
+
+        $company->profile_image = $profileImagePath.'/'.$profileImageName;
+        $company->founding_date = $request->founding_date;
+        $company->user_type = $request->user_type;
+        $company->location = $request->location;
+        $company->description = $request->description;
+        $company->outside_image = $outsideImagePath.'/'.$outsideImageName;
+        $company->inside_image = $insideImagePath.'/'.$insideImageName;
+        $company->save();
+
+        $request->file('profile_image')->storeAs($profileImagePath, $profileImageName);
+        $request->file('outside_image')->storeAs($outsideImagePath, $outsideImageName);
+        $request->file('inside_image')->storeAs($insideImagePath, $insideImageName);
+
+        if ($company) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Successful fill data',
+                'data' => $company,
+            ], 201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'failed fill data',
+                'data' => [],
+            ]);
+        }
     }
 
     public function me()
