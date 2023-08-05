@@ -87,9 +87,9 @@ class AuthController extends Controller
             'outside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'inside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-        $profileImagePath = 'images/job/profile';
-        $outsideImagePath ='images/job/outside';
-        $insideImagePath ='images/job/inside';
+        $profileImagePath = 'images/compant/profile';
+        $outsideImagePath ='images/compant/outside';
+        $insideImagePath ='images/compant/inside';
         $profileImageName = AppFunction::getImageName($request->file('profile_image'));
         $outsideImageName = AppFunction::getImageName($request->file('outside_image'));
         $insideImageName = AppFunction::getImageName($request->file('inside_image'));
