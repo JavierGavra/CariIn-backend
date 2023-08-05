@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App\Helpers\HttpStatus;
 use App\Models\Worker;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Worker\WorkerDetailResource;
+use App\Http\Resources\Worker\WorkerProfileResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -97,7 +98,28 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data found',
-            'data' => new WorkerDetailResource($worker),
+            'data' => new WorkerProfileResource($worker),
+        ]);
+    }
+
+    public function changePassword(Request $request) {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+        ]);
+        $worker = Worker::find(auth()->user()->id);
+
+        if (!Hash::check($request->old_password, $worker->password)) {
+            return HttpStatus::code400("Incorrect password");
+        }
+
+        $worker->password = Hash::make($request->new_password);
+        $worker->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Succesful change password',
+            'data' => [],
         ]);
     }
 }

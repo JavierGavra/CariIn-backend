@@ -14,6 +14,7 @@ use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
 use App\Http\Controllers\Company\JobApplicationController as JobApplicationCompanyController;
 use App\Http\Controllers\Company\RecruitWorkerController as RecruitWorkerCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
+use App\Http\Controllers\Worker\EditProfileController as EditProfileWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 use App\Http\Controllers\Worker\RecruitWorkerController as RecruitWorkerWorkerController;
@@ -73,9 +74,23 @@ Route::group(['prefix' => 'worker'], function () {
     
     Route::middleware(['middleware' => 'auth:worker'])->group(function () {
         # Auth pt.2
-        Route::get('/refresh-token', [AuthWorkerController::class, 'refreshToken']);
+        Route::post('/change-password', [AuthWorkerController::class, 'changePassword']);
         Route::get('/logout', [AuthWorkerController::class, 'logout']);
-        Route::get('/me', [AuthWorkerController::class, 'me']);
+        Route::prefix('me')->group(function () {
+            Route::get('/', [AuthWorkerController::class, 'me']);
+
+            # Edit
+            Route::controller(EditProfileWorkerController::class)->group(function () {
+                Route::get('/username', 'getUsername');
+                Route::post('/username/edit', 'setUsername');
+                
+                Route::get('/profile-image', 'getProfileImage');
+                Route::post('/profile-image/edit', 'setProfileImage');
+                
+                Route::get('/backdrop-image', 'getBackdropImage');
+                Route::post('/backdrop-image/edit', 'setBackdropImage');
+            });
+        });
         
         # Job
         Route::prefix('jobs')->controller(JobWorkerController::class)->group(function () {
