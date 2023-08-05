@@ -17,7 +17,7 @@ class JobApplicationController extends Controller
         $worker = auth()->user();
         $jobApplications = JobApplication::where('worker_id', $worker->id)->get();
 
-        $confirmedStatusValidate = ['diterima', 'ditolak', 'menunggu'];
+        $confirmedStatusValidate = ['mengirim', 'direview', 'wawancara', 'diterima', 'ditolak'];
         
         if (isset($confirmed_status)) {
             if (in_array($confirmed_status, $confirmedStatusValidate)){
@@ -67,7 +67,7 @@ class JobApplicationController extends Controller
             'job_id' => $request->job_id,
             'worker_id' => $worker->id,
             'description' => $request->description,
-            'confirmed_status' => 'menunggu',
+            'confirmed_status' => 'mengirim',
         ]);
 
         if ($jobApplication) {

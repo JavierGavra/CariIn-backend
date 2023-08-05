@@ -16,7 +16,7 @@ class JobApplicationController extends Controller
         $company = auth()->user();
         $jobApplications = JobApplication::whereIn('job_id', $company->jobs->pluck('id'))->get();
 
-        $confirmedStatusValidate = ['diterima', 'ditolak', 'menunggu'];
+        $confirmedStatusValidate = ['mengirim', 'direview', 'wawancara', 'diterima', 'ditolak'];
         
         if (isset($confirmed_status)) {
             if (in_array($confirmed_status, $confirmedStatusValidate)){
@@ -40,6 +40,10 @@ class JobApplicationController extends Controller
         if (is_null($jobApplication)) {
             return HttpStatus::code404('Data not found');  
         } else {
+            if ($jobApplication->confirmed_status == "mengirim") {
+                $jobApplication->confirmed_status = "direview";
+                $jobApplication->save();
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Data found',
@@ -50,14 +54,12 @@ class JobApplicationController extends Controller
     
     public function defineConfirmation(Request $request, int $id) {
         $company = auth()->user();
-        $jobApplication = JobApplication::whereIn('job_id', $company->jobs->pluck('id'))
-        ->where('confirmed_status', 'menunggu')
-        ->find($id);
+        $jobApplication = JobApplication::whereIn('job_id', $company->jobs->pluck('id'))->find($id);
         if (is_null($jobApplication)) {
             return HttpStatus::code404('Data not found');  
         }
 
-        $confirmedStatusValidate = ['diterima', 'ditolak']; 
+        $confirmedStatusValidate = ["wawancara", "diterima", "ditolak"]; 
         $request->validate(['confirmed_status' => 'required']);
         if(!in_array($request->confirmed_status, $confirmedStatusValidate)) {
             return HttpStatus::code400();
