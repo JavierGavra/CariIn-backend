@@ -52,7 +52,7 @@ class JobController extends Controller
             'maximum_age' => $request->maximum_age,
             'description' => $request->description,
             'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
-            'confirmed_status' => 'belum terverifikasi'
+            'confirmed_status' => 'belum_terverifikasi'
         ]);
         $request->file('cover_image')->storeAs($coverImagePath, $coverImageName);
         $request->file('backdrop_image')->storeAs($backdropImagePath, $backdropImageName);
