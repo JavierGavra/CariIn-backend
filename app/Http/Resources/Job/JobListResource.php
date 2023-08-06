@@ -19,6 +19,7 @@ class JobListResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'cover_image' => $this->cover_image,
             'description' => $this->description,
             'salary' => $this->salary,
             'tags' => TagResource::collection($this->tags),

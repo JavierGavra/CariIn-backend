@@ -128,18 +128,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data found',
-            'data' => [
-                'id' => $company->id,
-                'name' => $company->name,
-                'email' => $company->email,
-                'field' => $company->field,
-                'founding_date' => $company->founding_date,
-                'user_type' => $company->user_type,
-                'location' => $company->location,
-                'description' => $company->description,
-                'employees' => $company->employees,
-                'role' => $company->role
-            ]
+            'data' => $company
         ]);
     }
 
