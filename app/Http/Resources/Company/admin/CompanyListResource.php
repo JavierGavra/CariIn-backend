@@ -18,6 +18,8 @@ class CompanyListResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'description' => $this->description,
+            'field' => $this->field,
             'profile_image' => $this->profile_image,
             'confirmed_status' => $this->confirmed_status,
             'created_at' => $this->created_at,
