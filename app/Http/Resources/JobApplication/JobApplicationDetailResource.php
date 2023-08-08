@@ -28,6 +28,7 @@ class JobApplicationDetailResource extends JsonResource
                 ],
             ],
             'worker' => new WorkerListResource($this->worker),
+            'cv_file' => $this->cv_file,
             'description' => $this->description,
             'confirmed_status' => $this->confirmed_status,
             'created_at' => $this->created_at,

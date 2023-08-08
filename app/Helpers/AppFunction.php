@@ -36,4 +36,9 @@ class AppFunction{
     public static function getImageName($image) {
         return time() . '_' . str_replace(' ', '_', $image->getClientOriginalName());
     }
+    
+    //* get image name
+    public static function getFileName($file) {
+        return time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+    }
 }

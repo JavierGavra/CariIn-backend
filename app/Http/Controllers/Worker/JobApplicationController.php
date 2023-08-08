@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App\Helpers\AppFunction;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\JobApplication\JobApplicationDetailResource;
@@ -52,6 +53,7 @@ class JobApplicationController extends Controller
     public function create(Request $request) {
         $request->validate([
             'job_id' => 'required|integer',
+            'cv_file' => 'required|file',
             'description' => 'required',
         ]);
         $worker = auth()->user();
@@ -63,12 +65,16 @@ class JobApplicationController extends Controller
         if ($worker->jobApplications->contains('job_id', $request->job_id)) {
             return HttpStatus::code409('Job application already exist for this user');
         }
+        $cvFilePath = 'files/job-application/cv';
+        $cvFileName = AppFunction::getFileName($request->file('cv_file'));
         $jobApplication = JobApplication::create([
             'job_id' => $request->job_id,
             'worker_id' => $worker->id,
+            'cv_file' => $cvFilePath . '/' . $cvFileName,
             'description' => $request->description,
             'confirmed_status' => 'mengirim',
         ]);
+        $request->file('cv_file')->storeAs($cvFilePath, $cvFileName);
 
         if ($jobApplication) {
             return response()->json([
