@@ -91,6 +91,9 @@ Route::group(['prefix' => 'worker'], function () {
                 
                 Route::get('/backdrop-image', 'getBackdropImage');
                 Route::post('/backdrop-image/edit', 'setBackdropImage');
+                
+                Route::get('/company-visible', 'getCompanyVisible');
+                Route::post('/company-visible/edit', 'setCompanyVisible');
             });
         });
 

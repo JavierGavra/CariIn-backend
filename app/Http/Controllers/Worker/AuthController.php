@@ -32,6 +32,7 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'born_date' => $request->born_date,
             'address' => $request->address,
+            'company_visible' => 0,
             'role' => 'worker'
         ]);
 

@@ -40,7 +40,7 @@ class EditProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Get profile image",
-            'data' => ['username' => $worker->profile_image],
+            'data' => ['profile_image' => $worker->profile_image],
         ]);
     }
     
@@ -71,7 +71,7 @@ class EditProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Get backdrop image",
-            'data' => ['username' => $worker->backdrop_image],
+            'data' => ['backdrop_image' => $worker->backdrop_image],
         ]);
     }
     
@@ -92,6 +92,30 @@ class EditProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => "successful change backdrop image",
+            'data' => [],
+        ]);
+    }
+    
+    //* ##### Backdrop Image #####
+    public function getCompanyVisible() {
+        $worker = auth()->user();
+        return response()->json([
+            'success' => true,
+            'message' => "Get backdrop image",
+            'data' => ['company_visible' => AppFunction::booleanResponse($worker->company_visible)],
+        ]);
+    }
+    
+    public function setCompanyVisible(Request $request) {
+        $request->validate(['company_visible' => 'required']);
+        $worker = Worker::find(auth()->user()->id);
+
+        $worker->company_visible = AppFunction::booleanRequest($request->company_visible);
+        $worker->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => "successful change company visible",
             'data' => [],
         ]);
     }
