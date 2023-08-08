@@ -28,6 +28,7 @@ class WorkerProfileResource extends JsonResource
             'born_date' => $this->born_date,
             'interested' => 'Programmer',
             'description' => $this->description,
+            'company_visible' => AppFunction::booleanResponse($this->company_visible),
             'created_at' => $this->created_at,
         ];
     }
