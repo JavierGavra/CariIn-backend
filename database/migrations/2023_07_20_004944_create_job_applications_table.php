@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('job_id');
             $table->foreignId('worker_id');
+            $table->string('cv_file');
             $table->text('description');
             $table->enum('confirmed_status', ["mengirim", "direview", "wawancara", "diterima", "ditolak"]);
             $table->timestamps();
