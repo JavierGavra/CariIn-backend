@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('address');
             $table->date('born_date');
             $table->text('description')->nullable();
+            $table->boolean('company_visible');
             $table->string('role', 10);
             $table->timestamps();
         });
