@@ -14,6 +14,7 @@ use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
 use App\Http\Controllers\Company\JobApplicationController as JobApplicationCompanyController;
 use App\Http\Controllers\Company\RecruitWorkerController as RecruitWorkerCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
+use App\Http\Controllers\Worker\CurriculumVitaeController as CurriculumVitaeWorkerController;
 use App\Http\Controllers\Worker\EditProfileController as EditProfileWorkerController;
 use App\Http\Controllers\Worker\ExperienceController as ExperienceWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
@@ -111,6 +112,13 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/', 'index');
             Route::post('/create', 'create');
             Route::delete('/delete/{id}', 'delete');
+        });
+        
+        # CV
+        Route::prefix('curriculum-vitae')->controller(CurriculumVitaeWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/create', 'create');
+            Route::post('/edit', 'edit');
         });
         
         # Job
