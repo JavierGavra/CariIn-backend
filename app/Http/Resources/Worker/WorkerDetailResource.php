@@ -19,12 +19,16 @@ class WorkerDetailResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'email' => $this->email,
+            'profil_image' => $this->profile_image,
+            'backdrop_image' => $this->backdrop_image,
             'gender' => $this->gender,
+            'phone_number' => $this->phone_number,
             'age' => AppFunction::findAge($this->born_date),
             'address' => $this->address,
             'born_date' => $this->born_date,
             'interested' => 'Programmer',
             'description' => $this->description,
+            'company_visible' => AppFunction::booleanResponse($this->company_visible),
             'created_at' => $this->created_at,
         ];
     }

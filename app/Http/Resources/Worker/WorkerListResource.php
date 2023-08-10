@@ -18,6 +18,7 @@ class WorkerListResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
+            'profil_image' => $this->profile_image,
             'gender' => $this->gender,
             'age' => AppFunction::findAge($this->born_date),
             'address' => $this->address,
