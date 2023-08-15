@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AuthController as AuthAdminController;
 use App\Http\Controllers\Admin\CompanyController as CompanyAdminController;
 use App\Http\Controllers\Admin\JobController as JobAdminController;
 use App\Http\Controllers\Admin\TagController as TagAdminController;
+use App\Http\Controllers\Admin\WorkerController as WorkerAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
@@ -46,6 +47,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+            Route::get('/amount', 'amount');
             Route::prefix('delete')->group(function (){
                 Route::delete('/all-ditolak', 'deleteAllDitolak');
                 Route::delete('{id}', 'deleteByID');
@@ -64,6 +66,14 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+            Route::get('/amount', 'amount');
+        });
+        
+        # Worker
+        Route::prefix('workers')->controller(WorkerAdminController::class)->group(function () {
+            // Route::get('/', 'index');
+            // Route::get('/{id}', 'show');
+            Route::get('/amount', 'amount');
         });
     });
 });
