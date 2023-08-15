@@ -15,7 +15,7 @@ class JobController extends Controller
     public function index(Request $request) {
         $confirmed_status = $request->query('confirmed_status');
         $jobs = Job::all();
-
+        
         $confirmedStatusValidate = ['belum_terverifikasi', 'terverifikasi', 'ditolak'];
 
         if (isset($confirmed_status)) {
@@ -53,11 +53,11 @@ class JobController extends Controller
         if (is_null($job)) {
             return HttpStatus::code404('Data not found');
         }
-
+        
         $request->validate(['confirmed_status' => 'required']);
         $job->confirmed_status = $request->confirmed_status;
         $job->save();
-
+        
         return response()->json([
             'success' => true,
             'message' => 'Changes saved successfully',
@@ -88,5 +88,27 @@ class JobController extends Controller
                 'data' => [],
             ]);
         }
+    }
+    
+    // Job amount
+    public function amount(Request $request) {
+        $confirmed_status = $request->query('confirmed_status');
+        $jobs = Job::all();
+    
+        $confirmedStatusValidate = ['belum_terverifikasi', 'terverifikasi', 'ditolak'];
+    
+        if (isset($confirmed_status)) {
+            if (in_array($confirmed_status, $confirmedStatusValidate)){
+                $jobs = $jobs->where('confirmed_status', $confirmed_status);
+            } else {
+                return redirect()->route('bad-filter');
+            }
+        }
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Get job amount',
+            'data' => ['amount' => $jobs->count()],
+        ]);
     }
 }

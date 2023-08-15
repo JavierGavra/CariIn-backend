@@ -62,4 +62,25 @@ class CompanyController extends Controller
             'data' => new CompanyListResource($company),
         ]);
     }
+    
+    public function amount(Request $request) {
+        $companies = Company::all();
+        $confirmed_status = $request->query('confirmed_status');
+        
+        $confirmedStatusValidate = ['menunggu', 'diterima', 'ditolak', 'diblokir'];
+
+        if (isset($confirmed_status)) {
+            if (in_array($confirmed_status, $confirmedStatusValidate)) {
+                $companies = $companies->where('confirmed_status', $confirmed_status);
+            } else {
+                return redirect()->route('bad-filter');
+            }
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Get companies amount',
+            'data' => ['amount' => $companies->count()],
+        ]);
+    }
 }
