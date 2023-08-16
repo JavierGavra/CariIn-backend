@@ -20,10 +20,12 @@ class RecruitWorkerListResource extends JsonResource
                 'id' => $this->worker->id,
                 'username' => $this->worker->username,
                 'profile_image' => $this->worker->profile_image,
+                'address' => $this->worker->address,
             ],
             'job' => [
                 'id' => $this->job->id,
                 'title' => $this->job->title,
+                'cover_image' => $this->job->cover_image,
             ],
             'reply_status' => $this->reply_status,
             'created_at' => $this->created_at,
