@@ -184,6 +184,9 @@ Route::group(['prefix' => 'company'], function () {
         Route::prefix('workers')->controller(WorkerCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::get('/{id}/experiences', 'getExperiences');
+            Route::get('/{id}/experiences/{experience_id}', 'showExperience');
+            Route::get('/{id}/skills', 'getSkills');
         });
         
         # Job application
