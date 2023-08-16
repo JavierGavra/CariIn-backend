@@ -14,7 +14,7 @@ class RecruitWorker extends Model
         'worker_id',
         'job_id',
         'description',
-        'confirmed_status',
+        'reply_status',
     ];
 
     public function job(): BelongsTo
