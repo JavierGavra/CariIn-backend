@@ -29,7 +29,7 @@ class ExperienceController extends Controller
         $experience = $worker->experiences->find($id);
 
         if (is_null($experience)) {
-            HttpStatus::code404('Data not found');
+            return HttpStatus::code404('Data not found');
         } else {
             return response()->json([
                 'success' => true,
