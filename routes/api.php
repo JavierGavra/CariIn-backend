@@ -17,11 +17,13 @@ use App\Http\Controllers\Company\RecruitWorkerController as RecruitWorkerCompany
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
 use App\Http\Controllers\Worker\CurriculumVitaeController as CurriculumVitaeWorkerController;
 use App\Http\Controllers\Worker\EditProfileController as EditProfileWorkerController;
+use App\Http\Controllers\Worker\EducationController as EducationWorkerController;
 use App\Http\Controllers\Worker\ExperienceController as ExperienceWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 use App\Http\Controllers\Worker\SkillController as SkillWorkerController;
 use App\Http\Controllers\Worker\RecruitWorkerController as RecruitWorkerWorkerController;
+use App\Models\Education;
 
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
@@ -112,6 +114,14 @@ Route::group(['prefix' => 'worker'], function () {
         Route::prefix('experiences')->controller(ExperienceWorkerController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::post('/create', 'create');
+            Route::post('/edit/{id}', 'edit');
+            Route::delete('/delete/{id}', 'delete');
+        });
+        
+        # Educartion
+        Route::prefix('educations')->controller(EducationWorkerController::class)->group(function () {
+            Route::get('/', 'index');
             Route::post('/create', 'create');
             Route::post('/edit/{id}', 'edit');
             Route::delete('/delete/{id}', 'delete');

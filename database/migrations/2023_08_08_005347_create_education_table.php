@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('education', function (Blueprint $table) {
             $table->id();
             $table->foreignId('worker_id');
-            $table->string('location');
+            $table->string('educational_institution');
             $table->date('start_at');
             $table->date('end_at');
-            $table->text('description');
+            $table->String('title')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

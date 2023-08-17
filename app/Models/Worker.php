@@ -83,6 +83,11 @@ class Worker extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Experience::class);
     }
+    
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class);
+    }
 
     public function curriculumVitae(): HasOne
     {
