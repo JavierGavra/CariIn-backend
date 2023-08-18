@@ -7,6 +7,7 @@ use App\Models\Job;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -73,6 +74,11 @@ class Company extends Authenticatable implements JWTSubject
     public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);
+    }
+    
+    public function deviceToken(): HasOne
+    {
+        return $this->hasOne(CompanyDeviceToken::class);
     }
 }
 
