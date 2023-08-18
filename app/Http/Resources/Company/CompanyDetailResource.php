@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Resources\Company\admin;
+namespace App\Http\Resources\Company;
 
-use App\Http\Resources\Job\admin\JobListResource;
+use App\Http\Resources\Job\JobListResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
