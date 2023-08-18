@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Company\admin\CompanyDetailResource;
-use App\Http\Resources\Company\admin\CompanyListResource;
+use App\Http\Resources\Company\CompanyDetailResource;
+use App\Http\Resources\Company\CompanyListResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
 
