@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Helpers\AppFunction;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Http\Resources\Experience\ExperienceDetailResource;
 use App\Http\Resources\Experience\ExperienceListResource;
 use App\Http\Resources\Skill\SkillResource;
@@ -35,6 +36,20 @@ class WorkerController extends Controller
                 'success' => true,
                 'message' => 'Data found',
                 'data' => new WorkerDetailResource($worker),
+            ]);
+        }
+    }
+    
+    public function getDeviceToken(int $id) {
+        $worker = Worker::where('company_visible', 1)->find($id);
+        
+        if (is_null($worker)) {
+            return HttpStatus::code404("Data not found");
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data found',
+                'data' => new DeviceTokenResource($worker),
             ]);
         }
     }

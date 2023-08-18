@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Worker;
 
 use App\Helpers\AppFunction;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Worker;
+use App\Models\WorkerDeviceToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -96,12 +98,12 @@ class EditProfileController extends Controller
         ]);
     }
     
-    //* ##### Backdrop Image #####
+    //* ##### Company visible #####
     public function getCompanyVisible() {
         $worker = auth()->user();
         return response()->json([
             'success' => true,
-            'message' => "Get backdrop image",
+            'message' => "Get company visiblity",
             'data' => ['company_visible' => AppFunction::booleanResponse($worker->company_visible)],
         ]);
     }
@@ -116,6 +118,39 @@ class EditProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => "successful change company visible",
+            'data' => [],
+        ]);
+    }
+    
+    //* ##### Device token #####
+    public function getDeviceToken() {
+        $worker = auth()->user();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Get device token",
+            'data' => new DeviceTokenResource($worker),
+        ]);
+    }
+    
+    public function setDeviceToken(Request $request) {
+        $request->validate(['device_token' => 'required']);
+        $worker = Worker::find(auth()->user()->id);
+
+        if (is_null($worker->deviceToken)) {
+            WorkerDeviceToken::create([
+                'worker_id' => $worker->id,
+                'token' => $request->device_token,
+            ]);
+        } else {
+            $deviceToken = $worker->deviceToken;
+            $deviceToken->token = $request->device_token;
+            $deviceToken->save();
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => "successful change device token",
             'data' => [],
         ]);
     }
