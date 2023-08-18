@@ -38,7 +38,7 @@ class EditProfileController extends Controller
         
         return response()->json([
             'success' => true,
-            'message' => "successful change device token",
+            'message' => "Successful change device token",
             'data' => [],
         ]);
     }
