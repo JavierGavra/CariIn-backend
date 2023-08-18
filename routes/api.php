@@ -1,20 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UtilityController;
+use App\Http\Controllers\DeviceTokenController;
 use App\Http\Controllers\RefreshTokenController;
+use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\Admin\AuthController as AuthAdminController;
 use App\Http\Controllers\Admin\CompanyController as CompanyAdminController;
 use App\Http\Controllers\Admin\JobController as JobAdminController;
 use App\Http\Controllers\Admin\TagController as TagAdminController;
 use App\Http\Controllers\Admin\WorkerController as WorkerAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
+use App\Http\Controllers\Company\EditProfileController as EditProfileCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
 use App\Http\Controllers\Company\JobApplicationController as JobApplicationCompanyController;
 use App\Http\Controllers\Company\RecruitWorkerController as RecruitWorkerCompanyController;
 use App\Http\Controllers\Worker\AuthController as AuthWorkerController;
+use App\Http\Controllers\Worker\CompanyController as CompanyWorkerController;
 use App\Http\Controllers\Worker\CurriculumVitaeController as CurriculumVitaeWorkerController;
 use App\Http\Controllers\Worker\EditProfileController as EditProfileWorkerController;
 use App\Http\Controllers\Worker\EducationController as EducationWorkerController;
@@ -23,7 +26,6 @@ use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 use App\Http\Controllers\Worker\SkillController as SkillWorkerController;
 use App\Http\Controllers\Worker\RecruitWorkerController as RecruitWorkerWorkerController;
-use App\Models\Education;
 
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
@@ -107,9 +109,12 @@ Route::group(['prefix' => 'worker'], function () {
                 
                 Route::get('/company-visible', 'getCompanyVisible');
                 Route::post('/company-visible/edit', 'setCompanyVisible');
+                
+                Route::get('/device-token', 'getDeviceToken');
+                Route::post('/device-token/edit', 'setDeviceToken');
             });
         });
-
+        
         # Experience
         Route::prefix('experiences')->controller(ExperienceWorkerController::class)->group(function () {
             Route::get('/', 'index');
@@ -147,13 +152,20 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/{id}', 'show');
         });
         
+        # Company
+        Route::prefix('companies')->controller(CompanyWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::get('/{id}/device-token', 'getDeviceToken');
+        });
+        
         # Job application
         Route::prefix('job-applications')->controller(JobApplicationWorkerController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/create', 'create');
         });
-
+        
         # Recruit worker
         Route::prefix('recruit-workers')->controller(RecruitWorkerWorkerController::class)->group(function () {
             Route::get('/', 'index');
@@ -174,7 +186,14 @@ Route::group(['prefix' => 'company'], function () {
         # Auth pt.2
         Route::post('/fill-data', [AuthCompanyController::class, 'fillData']);
         Route::get('/logout', [AuthCompanyController::class, 'logout']);
-        Route::get('/me', [AuthCompanyController::class, 'me']);
+        Route::prefix('me')->group(function () {
+            Route::get('/', [AuthCompanyController::class, 'me']);
+            
+            Route::controller(EditProfileCompanyController::class)->group(function () {
+                Route::get('/device-token', 'getDeviceToken');
+                Route::post('/device-token/edit', 'setDeviceToken');
+            });
+        });
         
         # Job
         Route::prefix('jobs')->controller(JobCompanyController::class)->group(function () {
@@ -194,6 +213,7 @@ Route::group(['prefix' => 'company'], function () {
         Route::prefix('workers')->controller(WorkerCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
+            Route::get('/{id}/device-token', 'getDeviceToken');
             Route::get('/{id}/experiences', 'getExperiences');
             Route::get('/{id}/experiences/{experience_id}', 'showExperience');
             Route::get('/{id}/skills', 'getSkills');

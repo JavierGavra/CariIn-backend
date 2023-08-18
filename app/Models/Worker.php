@@ -93,5 +93,10 @@ class Worker extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(CurriculumVitae::class);
     }
+    
+    public function deviceToken(): HasOne
+    {
+        return $this->hasOne(WorkerDeviceToken::class);
+    }
 }
 
