@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Worker;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Company;
 
 class CompanyController extends Controller
 {
     public function getDeviceToken(int $id) {
-        $deviceToken = Company::find($id)->deviceToken;
+        $company = Company::find($id);
         
         return response()->json([
             'success' => true,
             'message' => 'Get company device token',
-            'data' => ['device_token' => $deviceToken->token]
+            'data' => new DeviceTokenResource($company)
         ]);
     }
 }

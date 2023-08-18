@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Helpers\AppFunction;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Http\Resources\Experience\ExperienceDetailResource;
 use App\Http\Resources\Experience\ExperienceListResource;
 use App\Http\Resources\Skill\SkillResource;
@@ -48,7 +49,7 @@ class WorkerController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data found',
-                'data' => ['device_token' => $worker->deviceToken->token],
+                'data' => new DeviceTokenResource($worker),
             ]);
         }
     }

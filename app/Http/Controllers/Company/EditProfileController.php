@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Company;
 use App\Models\CompanyDeviceToken;
 use Illuminate\Http\Request;
@@ -11,17 +12,12 @@ class EditProfileController extends Controller
 {
     //* ##### Device token #####
     public function getDeviceToken() {
-        $deviceToken = auth()->user()->deviceToken;
-        if (is_null($deviceToken)) {
-            $token = null;
-        } else {
-            $token = $deviceToken->token;
-        }
+        $company = auth()->user();
 
         return response()->json([
             'success' => true,
             'message' => "Get device token",
-            'data' => ['device_token' => $token],
+            'data' => new DeviceTokenResource($company),
         ]);
     }
     
@@ -42,7 +38,7 @@ class EditProfileController extends Controller
         
         return response()->json([
             'success' => true,
-            'message' => "successful change device token",
+            'message' => "Successful change device token",
             'data' => [],
         ]);
     }
