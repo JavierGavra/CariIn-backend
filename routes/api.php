@@ -190,6 +190,17 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', [AuthCompanyController::class, 'me']);
             
             Route::controller(EditProfileCompanyController::class)->group(function () {
+                Route::post('/edit', 'editProfile');
+                
+                Route::get('/profile-image', 'getProfileImage');
+                Route::post('/profile-image/edit', 'setProfileImage');
+                
+                Route::get('/inside-image', 'getInsideImage');
+                Route::post('/inside-image/edit', 'setInsideImage');
+                
+                Route::get('/outside-image', 'getOutsideImage');
+                Route::post('/outside-image/edit', 'setOutsideImage');
+                
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
             });
