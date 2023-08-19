@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\JobApplication;
+namespace App\Http\Resources\FieldPractice;
 
 use App\Http\Resources\Worker\WorkerListResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class JobApplicationDetailResource extends JsonResource
+class FieldPracticeDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,15 +25,18 @@ class JobApplicationDetailResource extends JsonResource
                 'company' => [
                     'id' => $this->job->company->id,
                     'name' => $this->job->company->name,
-                    'profile_image' => $this->job->profile_image,
                     'location' => $this->job->company->location,
                 ],
             ],
             'worker' => new WorkerListResource($this->worker),
             'cv_file' => $this->cv_file,
+            'portfolio_file' => $this->portfolio_file,
+            'application_letter_file' => $this->application_letter_file,
+            'student_evidence_file' => $this->student_evidence_file,
+            'educational_institution' => $this->educational_institution,
             'description' => $this->description,
             'confirmed_status' => $this->confirmed_status,
             'created_at' => $this->created_at,
-        ];
+        ];;
     }
 }

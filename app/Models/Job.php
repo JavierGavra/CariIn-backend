@@ -51,4 +51,9 @@ class Job extends Model
     {
         return $this->hasMany(JobApplication::class);
     }
+    
+    public function fieldPractices(): HasMany
+    {
+        return $this->hasMany(FieldPractice::class);
+    }
 }
