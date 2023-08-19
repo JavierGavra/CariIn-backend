@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Worker;
 
 use App\Helpers\AppFunction;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Worker;
 use App\Models\WorkerDeviceToken;
 use Illuminate\Http\Request;
@@ -102,7 +103,7 @@ class EditProfileController extends Controller
         $worker = auth()->user();
         return response()->json([
             'success' => true,
-            'message' => "Get backdrop image",
+            'message' => "Get company visiblity",
             'data' => ['company_visible' => AppFunction::booleanResponse($worker->company_visible)],
         ]);
     }
@@ -123,16 +124,12 @@ class EditProfileController extends Controller
     
     //* ##### Device token #####
     public function getDeviceToken() {
-        $deviceToken = auth()->user()->deviceToken;
-        if (is_null($deviceToken)) {
-            $token = null;
-        } else {
-            $token = $deviceToken->token;
-        }
+        $worker = auth()->user();
+
         return response()->json([
             'success' => true,
             'message' => "Get device token",
-            'data' => ['device_token' => $token],
+            'data' => new DeviceTokenResource($worker),
         ]);
     }
     
@@ -153,7 +150,7 @@ class EditProfileController extends Controller
         
         return response()->json([
             'success' => true,
-            'message' => "successful change device token",
+            'message' => "Successful change device token",
             'data' => [],
         ]);
     }

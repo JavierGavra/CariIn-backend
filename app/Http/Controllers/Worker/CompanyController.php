@@ -2,18 +2,50 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Company\CompanyDetailResource;
+use App\Http\Resources\Company\CompanyListResource;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Company;
 
 class CompanyController extends Controller
 {
-    public function getDeviceToken(int $id) {
-        $deviceToken = Company::find($id)->deviceToken;
-        
+    public function index() {
+        $companies = Company::where('confirmed_status', 'diterima')->get();
+
         return response()->json([
             'success' => true,
-            'message' => 'Get company device token',
-            'data' => ['device_token' => $deviceToken->token]
+            'message' => 'Get all company',
+            'data' => CompanyListResource::collection($companies)
         ]);
+    }
+    
+    public function show(int $id) {
+        $company = Company::where('confirmed_status', 'diterima')->find($id);
+        
+        if (is_null($company)) {
+            return HttpStatus::code404("Data not found");
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Get all company',
+                'data' => new CompanyDetailResource($company)
+            ]);
+        }
+    }
+    
+    public function getDeviceToken(int $id) {
+        $company = Company::where('confirmed_status', 'diterima')->find($id);
+        
+        if (is_null($company)) {
+            return HttpStatus::code404('Data not found');
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Get company device token',
+                'data' => new DeviceTokenResource($company)
+            ]);
+        }
     }
 }

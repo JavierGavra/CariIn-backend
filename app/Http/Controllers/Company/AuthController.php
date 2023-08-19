@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Helpers\AppFunction;
+use App\Helpers\HttpStatus;
 use App\Models\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -84,8 +85,8 @@ class AuthController extends Controller
             'user_type' => 'required',
             'location' => 'required',
             'description' => 'required',
-            'outside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'inside_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'outside_image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'inside_image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ]);
         $profileImagePath = 'images/company/profile';
         $outsideImagePath ='images/company/outside';
@@ -139,6 +140,27 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'User logout successfully',
             'data' => []
+        ]);
+    }
+
+    public function changePassword(Request $request) {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+        ]);
+        $company = Company::find(auth()->user()->id);
+
+        if (!Hash::check($request->old_password, $company->password)) {
+            return HttpStatus::code400("Incorrect password");
+        }
+
+        $company->password = Hash::make($request->new_password);
+        $company->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Succesful change password',
+            'data' => [],
         ]);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TagController as TagAdminController;
 use App\Http\Controllers\Admin\WorkerController as WorkerAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\EditProfileController as EditProfileCompanyController;
+use App\Http\Controllers\Company\FieldPracticeController as FieldPracticeCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Worker\CurriculumVitaeController as CurriculumVitaeWork
 use App\Http\Controllers\Worker\EditProfileController as EditProfileWorkerController;
 use App\Http\Controllers\Worker\EducationController as EducationWorkerController;
 use App\Http\Controllers\Worker\ExperienceController as ExperienceWorkerController;
+use App\Http\Controllers\Worker\FieldPracticeController as FieldPracticeWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 use App\Http\Controllers\Worker\SkillController as SkillWorkerController;
@@ -172,6 +174,13 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/{id}', 'show');
             Route::post('/{id}/send-reply', 'sendReply');
         });
+        
+        # Field practice (PKL)
+        Route::prefix('field-practices')->controller(FieldPracticeWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('/create', 'create');
+        });
     });
 });
 
@@ -190,6 +199,17 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', [AuthCompanyController::class, 'me']);
             
             Route::controller(EditProfileCompanyController::class)->group(function () {
+                Route::post('/edit', 'editProfile');
+                
+                Route::get('/profile-image', 'getProfileImage');
+                Route::post('/profile-image/edit', 'setProfileImage');
+                
+                Route::get('/inside-image', 'getInsideImage');
+                Route::post('/inside-image/edit', 'setInsideImage');
+                
+                Route::get('/outside-image', 'getOutsideImage');
+                Route::post('/outside-image/edit', 'setOutsideImage');
+                
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
             });
@@ -231,6 +251,13 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/create', 'create');
+        });
+        
+        # Field practice (PKL)
+        Route::prefix('field-practices')->controller(FieldPracticeCompanyController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::post('/{id}/define-confirmation', 'defineConfirmation');
         });
     });
 });
