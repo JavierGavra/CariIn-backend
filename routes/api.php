@@ -98,7 +98,7 @@ Route::group(['prefix' => 'worker'], function () {
         Route::get('/logout', [AuthWorkerController::class, 'logout']);
         Route::prefix('me')->group(function () {
             Route::get('/', [AuthWorkerController::class, 'me']);
-
+            
             # Edit
             Route::controller(EditProfileWorkerController::class)->group(function () {
                 Route::get('/username', 'getUsername');
@@ -115,12 +115,13 @@ Route::group(['prefix' => 'worker'], function () {
                 
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
+                Route::delete('/device-token/delete', 'deleteDeviceToken');
             });
         });
         
         # Search
         Route::get('/search', [SearchController::class, 'searchQuery']);
-
+        
         # Experience
         Route::prefix('experiences')->controller(ExperienceWorkerController::class)->group(function () {
             Route::get('/', 'index');
@@ -198,6 +199,7 @@ Route::group(['prefix' => 'company'], function () {
     Route::middleware(['middleware' => 'auth:company'])->group(function () {
         # Auth pt.2
         Route::post('/fill-data', [AuthCompanyController::class, 'fillData']);
+        Route::post('/change-password', [AuthCompanyController::class, 'changePassword']);
         Route::get('/logout', [AuthCompanyController::class, 'logout']);
         Route::prefix('me')->group(function () {
             Route::get('/', [AuthCompanyController::class, 'me']);
@@ -216,6 +218,7 @@ Route::group(['prefix' => 'company'], function () {
                 
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
+                Route::delete('/device-token/delete', 'deleteDeviceToken');
             });
         });
         
@@ -240,6 +243,7 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/{id}/device-token', 'getDeviceToken');
             Route::get('/{id}/experiences', 'getExperiences');
             Route::get('/{id}/experiences/{experience_id}', 'showExperience');
+            Route::get('/{id}/educations', 'getEducations');
             Route::get('/{id}/skills', 'getSkills');
         });
         
