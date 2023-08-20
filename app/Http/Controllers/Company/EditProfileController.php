@@ -167,4 +167,19 @@ class EditProfileController extends Controller
             'data' => [],
         ]);
     }
+
+    public function deleteDeviceToken() {
+        $company = auth()->user();
+        
+        if (is_null($company->deviceToken)) {
+            return HttpStatus::code404('You dont have device token');
+        } else {
+            $company->deviceToken->delete();
+            return response()->json([
+                'success' => true,
+                'message' => "Succesful delete device token",
+                'data' => [],
+            ]);
+        }
+    }
 }
