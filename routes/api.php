@@ -240,6 +240,7 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/{id}/device-token', 'getDeviceToken');
             Route::get('/{id}/experiences', 'getExperiences');
             Route::get('/{id}/experiences/{experience_id}', 'showExperience');
+            Route::get('/{id}/educations', 'getEducations');
             Route::get('/{id}/skills', 'getSkills');
         });
         
