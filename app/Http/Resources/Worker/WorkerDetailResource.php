@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Worker;
 
 use App\Helpers\AppFunction;
+use App\Http\Resources\Education\EducationResource;
 use App\Http\Resources\Experience\ExperienceListResource;
 use App\Http\Resources\Skill\SkillResource;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ class WorkerDetailResource extends JsonResource
             'interested' => 'Programmer',
             'description' => $this->description,
             'experiences' => ExperienceListResource::collection($this->experiences),
+            'educations' => EducationResource::collection($this->educations),
             'skills' => SkillResource::collection($this->skills),
             'company_visible' => AppFunction::booleanResponse($this->company_visible),
             'created_at' => $this->created_at,

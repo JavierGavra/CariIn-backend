@@ -27,7 +27,7 @@ class WorkerController extends Controller
     }
 
     public function show(int $id) {
-        $worker = Worker::where('company_visible', 1)->find($id);
+        $worker = Worker::find($id);
         
         if (is_null($worker)) {
             return HttpStatus::code404("Data not found");
@@ -41,7 +41,7 @@ class WorkerController extends Controller
     }
     
     public function getDeviceToken(int $id) {
-        $worker = Worker::where('company_visible', 1)->find($id);
+        $worker = Worker::find($id);
         
         if (is_null($worker)) {
             return HttpStatus::code404("Data not found");
@@ -55,7 +55,7 @@ class WorkerController extends Controller
     }
     
     public function getExperiences(int $id) {
-        $worker = Worker::where('company_visible', 1)->find($id);
+        $worker = Worker::find($id);
         
         if (is_null($worker)) {
             return HttpStatus::code404("Data not found");
@@ -69,7 +69,7 @@ class WorkerController extends Controller
     }
     
     public function showExperience(int $id, int $experience_id) {
-        $worker = Worker::where('company_visible', 1)->find($id);
+        $worker = Worker::find($id);
         if (is_null($worker)) {
             return HttpStatus::code404("Data not found");
         }
@@ -88,7 +88,7 @@ class WorkerController extends Controller
     }
 
     public function getSkills(int $id) {
-        $worker = Worker::where('company_visible', 1)->find($id);
+        $worker = Worker::find($id);
         
         if (is_null($worker)) {
             return HttpStatus::code404("Data not found");
