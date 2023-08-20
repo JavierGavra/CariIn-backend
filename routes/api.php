@@ -98,7 +98,7 @@ Route::group(['prefix' => 'worker'], function () {
         Route::get('/logout', [AuthWorkerController::class, 'logout']);
         Route::prefix('me')->group(function () {
             Route::get('/', [AuthWorkerController::class, 'me']);
-
+            
             # Edit
             Route::controller(EditProfileWorkerController::class)->group(function () {
                 Route::get('/username', 'getUsername');
@@ -199,6 +199,7 @@ Route::group(['prefix' => 'company'], function () {
     Route::middleware(['middleware' => 'auth:company'])->group(function () {
         # Auth pt.2
         Route::post('/fill-data', [AuthCompanyController::class, 'fillData']);
+        Route::post('/change-password', [AuthCompanyController::class, 'changePassword']);
         Route::get('/logout', [AuthCompanyController::class, 'logout']);
         Route::prefix('me')->group(function () {
             Route::get('/', [AuthCompanyController::class, 'me']);
