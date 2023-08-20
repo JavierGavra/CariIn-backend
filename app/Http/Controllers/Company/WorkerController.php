@@ -6,6 +6,7 @@ use App\Helpers\AppFunction;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DeviceToken\DeviceTokenResource;
+use App\Http\Resources\Education\EducationResource;
 use App\Http\Resources\Experience\ExperienceDetailResource;
 use App\Http\Resources\Experience\ExperienceListResource;
 use App\Http\Resources\Skill\SkillResource;
@@ -85,6 +86,20 @@ class WorkerController extends Controller
             'data' =>new ExperienceDetailResource($experience),
         ]);
         
+    }
+
+    public function getEducations(int $id) {
+        $worker = Worker::find($id);
+        
+        if (is_null($worker)) {
+            return HttpStatus::code404("Data not found");
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data found',
+                'data' => EducationResource::collection($worker->educations),
+            ]);
+        }
     }
 
     public function getSkills(int $id) {
