@@ -26,7 +26,6 @@ class SearchController extends Controller
             'message' => "Get data from query",
             'data' => [
                 'query' => $query,
-                'database' => $dbmsName,
                 'job' => JobListResource::collection($jobs),
             ],
         ]);
