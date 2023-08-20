@@ -115,12 +115,13 @@ Route::group(['prefix' => 'worker'], function () {
                 
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
+                Route::delete('/device-token/delete', 'deleteDeviceToken');
             });
         });
         
         # Search
         Route::get('/search', [SearchController::class, 'searchQuery']);
-
+        
         # Experience
         Route::prefix('experiences')->controller(ExperienceWorkerController::class)->group(function () {
             Route::get('/', 'index');
@@ -216,6 +217,7 @@ Route::group(['prefix' => 'company'], function () {
                 
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
+                Route::delete('/device-token/delete', 'deleteDeviceToken');
             });
         });
         

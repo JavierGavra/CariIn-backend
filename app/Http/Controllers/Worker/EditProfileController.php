@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Worker;
 
 use App\Helpers\AppFunction;
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Worker;
@@ -136,7 +137,7 @@ class EditProfileController extends Controller
     public function setDeviceToken(Request $request) {
         $request->validate(['device_token' => 'required']);
         $worker = Worker::find(auth()->user()->id);
-
+        
         if (is_null($worker->deviceToken)) {
             WorkerDeviceToken::create([
                 'worker_id' => $worker->id,
@@ -153,5 +154,20 @@ class EditProfileController extends Controller
             'message' => "Successful change device token",
             'data' => [],
         ]);
+    }
+
+    public function deleteDeviceToken() {
+        $worker = auth()->user();
+        
+        if (is_null($worker->deviceToken)) {
+            return HttpStatus::code404('You dont have device token');
+        } else {
+            $worker->deviceToken->delete();
+            return response()->json([
+                'success' => true,
+                'message' => "Succesful delete device token",
+                'data' => [],
+            ]);
+        }
     }
 }
