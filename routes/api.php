@@ -28,6 +28,7 @@ use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 use App\Http\Controllers\Worker\SkillController as SkillWorkerController;
 use App\Http\Controllers\Worker\RecruitWorkerController as RecruitWorkerWorkerController;
+use App\Http\Controllers\Worker\SearchController;
 
 //* >===== Utility =====<
 Route::get('/test', [UtilityController::class, 'helloWorld'])->name('test');
@@ -117,6 +118,9 @@ Route::group(['prefix' => 'worker'], function () {
             });
         });
         
+        # Search
+        Route::get('/search', [SearchController::class, 'searchQuery']);
+
         # Experience
         Route::prefix('experiences')->controller(ExperienceWorkerController::class)->group(function () {
             Route::get('/', 'index');
