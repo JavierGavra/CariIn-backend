@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Company\CompanyDetailResource;
 use App\Http\Resources\Company\CompanyListResource;
 use App\Models\Company;
+use App\Models\Inbox;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -82,5 +83,29 @@ class CompanyController extends Controller
             'message' => 'Get companies amount',
             'data' => ['amount' => $companies->count()],
         ]);
+    }
+
+    public function sendInbox(Request $request, int $id) {
+        $company = Company::find($id);
+
+        if (is_null($company)) {
+            return HttpStatus::code404("Data not found");
+        }
+        
+        $request->validate([
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        $inbox = new Inbox();
+        $inbox->subject = $request->subject;
+        $inbox->message = $request->message;
+        $company->inbox()->save($inbox);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Inbox sent successfully',
+            'data' => [],
+        ], 201);
     }
 }

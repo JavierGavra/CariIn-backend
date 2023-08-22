@@ -80,5 +80,10 @@ class Company extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(CompanyDeviceToken::class);
     }
+
+    public function inbox()
+    {
+        return $this->morphMany(Inbox::class, 'user');
+    }
 }
 
