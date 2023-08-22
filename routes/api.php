@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\WorkerController as WorkerAdminController;
 use App\Http\Controllers\Company\AuthController as AuthCompanyController;
 use App\Http\Controllers\Company\EditProfileController as EditProfileCompanyController;
 use App\Http\Controllers\Company\FieldPracticeController as FieldPracticeCompanyController;
+use App\Http\Controllers\Company\InboxController as InboxCompanyController;
 use App\Http\Controllers\Company\JobController as JobCompanyController;
 use App\Http\Controllers\Company\TagController as TagCompanyController;
 use App\Http\Controllers\Company\WorkerController as WorkerCompanyController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Worker\EditProfileController as EditProfileWorkerContro
 use App\Http\Controllers\Worker\EducationController as EducationWorkerController;
 use App\Http\Controllers\Worker\ExperienceController as ExperienceWorkerController;
 use App\Http\Controllers\Worker\FieldPracticeController as FieldPracticeWorkerController;
+use App\Http\Controllers\Worker\InboxController as InboxWorkerController;
 use App\Http\Controllers\Worker\JobController as JobWorkerController;
 use App\Http\Controllers\Worker\JobApplicationController as JobApplicationWorkerController;
 use App\Http\Controllers\Worker\SkillController as SkillWorkerController;
@@ -73,6 +75,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+            Route::post('/{id}/send-inbox', 'sendInbox');
             Route::get('/amount', 'amount');
         });
         
@@ -164,6 +167,7 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::get('/{id}/device-token', 'getDeviceToken');
+            Route::post('/{id}/send-inbox', 'sendInbox');
         });
         
         # Job application
@@ -185,6 +189,12 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/create', 'create');
+        });
+        
+        # Inbox
+        Route::prefix('inbox')->controller(InboxWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/{id}/read', 'read');
         });
     });
 });
@@ -241,6 +251,7 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::get('/{id}/device-token', 'getDeviceToken');
+            Route::post('/{id}/send-inbox', 'sendInbox');
             Route::get('/{id}/experiences', 'getExperiences');
             Route::get('/{id}/experiences/{experience_id}', 'showExperience');
             Route::get('/{id}/educations', 'getEducations');
@@ -266,6 +277,12 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+        });
+
+        # Inbox
+        Route::prefix('inbox')->controller(InboxWorkerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/{id}/read', 'read');
         });
     });
 });

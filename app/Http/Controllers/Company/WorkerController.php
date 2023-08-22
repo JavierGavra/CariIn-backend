@@ -12,6 +12,7 @@ use App\Http\Resources\Experience\ExperienceListResource;
 use App\Http\Resources\Skill\SkillResource;
 use App\Http\Resources\Worker\WorkerDetailResource;
 use App\Http\Resources\Worker\WorkerListResource;
+use App\Models\Inbox;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 
@@ -53,6 +54,30 @@ class WorkerController extends Controller
                 'data' => new DeviceTokenResource($worker),
             ]);
         }
+    }
+
+    public function sendInbox(Request $request, int $id) {
+        $worker = Worker::find($id);
+
+        if (is_null($worker)) {
+            return HttpStatus::code404("Data not found");
+        }
+        
+        $request->validate([
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        $inbox = new Inbox();
+        $inbox->subject = $request->subject;
+        $inbox->message = $request->message;
+        $worker->inbox()->save($inbox);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Inbox sent successfully',
+            'data' => [],
+        ], 201);
     }
     
     public function getExperiences(int $id) {
