@@ -15,12 +15,22 @@ class CompanyController extends Controller
     public function index(Request $request) {
         $companies = Company::all();
         $confirmed_status = $request->query('confirmed_status');
+        $field = $request->query('field');
         
         $confirmedStatusValidate = ['menunggu', 'diterima', 'ditolak', 'diblokir'];
+        $fieldValidate = ['Teknologi', 'Pendidikan', 'Ekonomi', 'Seni dan Sastra', 'Teknik dan Industri', 'Kesehatan'];
 
         if (isset($confirmed_status)) {
             if (in_array($confirmed_status, $confirmedStatusValidate)) {
                 $companies = $companies->where('confirmed_status', $confirmed_status);
+            } else {
+                return redirect()->route('bad-filter');
+            }
+        }
+        
+        if (isset($field)) {
+            if (in_array($field, $fieldValidate)) {
+                $companies = $companies->where('field', $field);
             } else {
                 return redirect()->route('bad-filter');
             }
