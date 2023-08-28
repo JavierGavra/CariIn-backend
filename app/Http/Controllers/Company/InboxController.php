@@ -6,6 +6,8 @@ use App\Helpers\AppFunction;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Inbox\InboxResource;
+use App\Models\Company;
+use App\Models\Inbox;
 use Illuminate\Http\Request;
 
 class InboxController extends Controller
@@ -36,5 +38,29 @@ class InboxController extends Controller
             'message' => 'Read inbox',
             'data' => new InboxResource($inbox),
         ]);
+    }
+
+    public function create(Request $request) {
+        $company = Company::find(auth()->user()->id);
+
+        if (is_null($company)) {
+            return HttpStatus::code404("Data not found");
+        }
+        
+        $request->validate([
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        $inbox = new Inbox();
+        $inbox->subject = $request->subject;
+        $inbox->message = $request->message;
+        $company->inbox()->save($inbox);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Inbox sent successfully',
+            'data' => [],
+        ], 201);
     }
 }
