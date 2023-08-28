@@ -195,6 +195,7 @@ Route::group(['prefix' => 'worker'], function () {
         Route::prefix('inbox')->controller(InboxWorkerController::class)->group(function () {
             Route::get('/', 'index');
             Route::post('/{id}/read', 'read');
+            Route::post('/create', 'create');
         });
     });
 });
@@ -278,11 +279,12 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
         });
-
+        
         # Inbox
-        Route::prefix('inbox')->controller(InboxWorkerController::class)->group(function () {
+        Route::prefix('inbox')->controller(InboxCompanyController::class)->group(function () {
             Route::get('/', 'index');
             Route::post('/{id}/read', 'read');
+            Route::post('/create', 'create');
         });
     });
 });
