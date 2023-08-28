@@ -16,7 +16,7 @@ class JobApplicationController extends Controller
     public function index(Request $request) {
         $confirmed_status = $request->query('confirmed_status');
         $worker = auth()->user();
-        $jobApplications = JobApplication::where('worker_id', $worker->id)->get();
+        $jobApplications = $worker->jobApplications;
 
         $confirmedStatusValidate = ['mengirim', 'direview', 'wawancara', 'diterima', 'ditolak'];
         
@@ -37,7 +37,7 @@ class JobApplicationController extends Controller
     
     public function show(int $id) {
         $worker = auth()->user();
-        $jobApplication = JobApplication::where('worker_id', $worker->id)->get()->find($id);
+        $jobApplication = $worker->jobApplications->find($id);
 
         if (is_null($jobApplication)) {
             return HttpStatus::code404('Data not found');  
