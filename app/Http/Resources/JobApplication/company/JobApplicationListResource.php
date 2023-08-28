@@ -17,7 +17,7 @@ class JobApplicationListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'job' => [
+            'job' => $this->job == null? null : [
                 'id' => $this->job->id,
                 'title' => $this->job->title,
             ],
