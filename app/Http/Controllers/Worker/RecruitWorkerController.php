@@ -15,7 +15,7 @@ class RecruitWorkerController extends Controller
 {
     public function index(Request $request) {
         $worker = auth()->user();
-        $recruitWorkers = RecruitWorker::where('worker_id', $worker->id)->get();
+        $recruitWorkers = $worker->recruitWorkers;
         $reply_status = $request->query('reply_status');
         
         $replyStatusValidate = ['menunggu', 'diterima', 'ditolak'];
@@ -37,7 +37,7 @@ class RecruitWorkerController extends Controller
     
     public function show(int $id) {
         $worker = auth()->user();
-        $recruitWorker = RecruitWorker::where('worker_id', $worker->id)->find($id);
+        $recruitWorker = $worker->recruitWorkers->find($id);
         
         if (is_null($recruitWorker)) {
             return HttpStatus::code404('Data not found');  
@@ -52,7 +52,7 @@ class RecruitWorkerController extends Controller
     
     public function sendReply(int $id, Request $request) {
         $worker = auth()->user();
-        $recruitWorker = RecruitWorker::where('worker_id', $worker->id)
+        $recruitWorker = $worker->recruitWorkers
         ->where('reply_status', 'menunggu')
         ->find($id);
         if (is_null($recruitWorker)) {
