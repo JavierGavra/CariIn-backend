@@ -30,7 +30,9 @@ class JobController extends Controller
             'description' =>'required',
             'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
-            'pkl_status' => 'required'
+            'pkl_status' => 'required',
+            'expired_date' => 'required',
+            'worker_available' => 'nullable|integer',
         ]);
 
         $company = auth()->user();
@@ -52,7 +54,8 @@ class JobController extends Controller
             'maximum_age' => $request->maximum_age,
             'description' => $request->description,
             'pkl_status' => AppFunction::booleanRequest($request->pkl_status),
-            'confirmed_status' => 'belum_terverifikasi'
+            'expired_date' => $request->expired_date,
+            'worker_available' => $request->worker_available,
         ]);
         $request->file('cover_image')->storeAs($coverImagePath, $coverImageName);
         $request->file('backdrop_image')->storeAs($backdropImagePath, $backdropImageName);

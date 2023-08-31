@@ -67,6 +67,13 @@ class JobApplicationController extends Controller
 
         $jobApplication->confirmed_status = $request->confirmed_status;
         $jobApplication->save();
+        
+        if ($request->confirmed_status == 'diterima') {
+            $job = $jobApplication->job;
+            $job->worker_available--;
+            $job->save();
+        }
+
 
         return response()->json([
             'success' => true,

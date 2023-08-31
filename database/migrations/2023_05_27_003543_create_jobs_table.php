@@ -26,7 +26,9 @@ return new class extends Migration
             $table->integer('maximum_age')->nullable();
             $table->text('description');
             $table->boolean('pkl_status');
-            $table->enum('confirmed_status', ["belum_terverifikasi", "terverifikasi", "ditolak"]);
+            $table->date('expired_date');
+            $table->integer('worker_available')->nullable();
+            $table->enum('confirmed_status', ["belum_terverifikasi", "terverifikasi", "ditolak"])->default("belum_terverifikasi");
             $table->timestamps();
         });
     }
