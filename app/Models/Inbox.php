@@ -9,6 +9,13 @@ class Inbox extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'subject',
+        'message',
+        'type',
+        'redirect_id'
+    ];
+
     public function user()
     {
         return $this->morphTo();

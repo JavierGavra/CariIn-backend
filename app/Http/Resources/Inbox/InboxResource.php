@@ -21,6 +21,8 @@ class InboxResource extends JsonResource
             'message' => $this->message,
             'sent_date' => $this->created_at,
             'read' => AppFunction::booleanResponse($this->read),
+            'type' => $this->type,
+            'redirect_id' => $this->redirect_id
         ];
     }
 }

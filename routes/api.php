@@ -200,6 +200,8 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/', 'index');
             Route::post('/{id}/read', 'read');
             Route::post('/create', 'create');
+            Route::delete('/delete', 'deleteAll');
+            Route::delete('/delete/{id}', 'deleteById');
         });
     });
 });
@@ -289,6 +291,8 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', 'index');
             Route::post('/{id}/read', 'read');
             Route::post('/create', 'create');
+            Route::delete('/delete', 'deleteAll');
+            Route::delete('/delete/{id}', 'deleteById');
         });
     });
 });

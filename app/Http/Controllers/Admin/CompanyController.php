@@ -105,11 +105,15 @@ class CompanyController extends Controller
         $request->validate([
             'subject' => 'required',
             'message' => 'required',
+            'type' => 'nullable',
+            'redirect_id' => 'nullable',
         ]);
 
         $inbox = new Inbox();
         $inbox->subject = $request->subject;
         $inbox->message = $request->message;
+        $inbox->type = is_null($request->type)? 'sistem' : $request->type;
+        $inbox->redirect_id = $request->redirect_id;
         $company->inbox()->save($inbox);
 
         return response()->json([
