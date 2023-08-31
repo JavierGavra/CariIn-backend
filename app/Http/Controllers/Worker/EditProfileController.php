@@ -170,4 +170,32 @@ class EditProfileController extends Controller
             ]);
         }
     }
+
+    //* ##### Status #####
+    public function getStatus() {
+        $worker = auth()->user();
+        return response()->json([
+            'success' => true,
+            'message' => "Get status",
+            'data' => ['status' => $worker->status],
+        ]);
+    }
+    
+    public function setStatus(Request $request) {
+        $request->validate(['status' => 'required']);
+        $worker = Worker::find(auth()->user()->id);
+
+        if (!in_array($request->status, ["bekerja", "tidak_bekerja"])) {
+            return redirect()->route('bad-filter');
+        }
+
+        $worker->status = $request->status;
+        $worker->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => "successful change status",
+            'data' => [],
+        ]);
+    }
 }

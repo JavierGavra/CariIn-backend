@@ -22,7 +22,8 @@ class WorkerListResource extends JsonResource
             'gender' => $this->gender,
             'age' => AppFunction::findAge($this->born_date),
             'address' => $this->address,
-            'interested' => 'Programmer',
+            'interested' => $this->interested,
+            'status' => $this->status,
             'created_at' => $this->created_at,
         ];
     }

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->integer('employees');
             $table->enum('confirmed_status', ["menunggu", "diterima", "ditolak", "diblokir"]);
-            $table->string('role', 10);
+            $table->string('role', 10)->default('company');
             $table->timestamps();
         });
     }

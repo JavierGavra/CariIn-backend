@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Worker;
 
+use App\Helpers\AppFunction;
 use App\Helpers\HttpStatus;
 use App\Models\Worker;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Worker\WorkerProfileResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -18,22 +20,12 @@ class AuthController extends Controller
             'username' => 'required|unique:App\Models\Worker,username',
             'email' => 'required|email|unique:App\Models\Worker,email',
             'password' => 'required',
-            'gender' => 'required',
-            'phone_number' => 'required|unique:App\Models\Worker,phone_number',
-            'born_date' => 'required',
-            'address' => 'required'
         ]);
-
+        
         $worker = Worker::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'gender' => $request->gender,
-            'phone_number' => $request->phone_number,
-            'born_date' => $request->born_date,
-            'address' => $request->address,
-            'company_visible' => 0,
-            'role' => 'worker'
         ]);
 
         if ($worker) {
@@ -81,6 +73,48 @@ class AuthController extends Controller
                 'token' => $token
             ]
         ]);
+    }
+
+    public function filldata(Request $request) {
+        $worker = Worker::find(auth()->user()->id);
+        if(isset($worker->gender)) {
+            return HttpStatus::code400('This URL is no longer available for this user');
+        }
+
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'gender' => 'required',
+            'phone_number' => 'required|unique:App\Models\Worker,phone_number',
+            'born_date' => 'required',
+            'address' => 'required',
+            'interested' => 'required'
+        ]);
+
+        $profileImagePath = 'images/worker/profile';
+        $profileImageName = AppFunction::getImageName($request->file('profile_image'));
+        $worker->profile_image = $profileImagePath.'/'.$profileImageName;
+        $worker->gender = $request->gender;
+        $worker->phone_number = $request->phone_number;
+        $worker->born_date = $request->born_date;
+        $worker->address = $request->address;
+        $worker->interested = $request->interested;
+        $worker->save();
+
+        $request->file('profile_image')->storeAs($profileImagePath, $profileImageName);
+
+        if ($worker) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Successful fill data',
+                'data' => $worker,
+            ], 201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed fill data',
+                'data' => [],
+            ]);
+        }
     }
 
     public function logout()
