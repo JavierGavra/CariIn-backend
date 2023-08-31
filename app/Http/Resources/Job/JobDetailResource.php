@@ -51,6 +51,8 @@ class JobDetailResource extends JsonResource
                 'location' => $this->location
             ],
             
+            'expired_date' => $this->expired_date,
+            'worker_available' => $this->worker_available,
             'pkl_status' => AppFunction::booleanResponse($this->pkl_status),
             'confirmed_status' => $this->confirmed_status,
         ];

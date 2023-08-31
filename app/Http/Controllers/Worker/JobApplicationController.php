@@ -62,6 +62,9 @@ class JobApplicationController extends Controller
         if ($job->confirmed_status == 'ditolak') {
             return HttpStatus::code422('This job is not verified by the admin');
         }   
+        if ($job->worker_available <= 0) {
+            return HttpStatus::code400('This job is full');
+        }
         if ($worker->jobApplications->contains('job_id', $request->job_id)) {
             return HttpStatus::code409('Job application already exist for this user');
         }

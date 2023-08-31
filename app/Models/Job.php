@@ -33,6 +33,8 @@ class Job extends Model
         'description',
         'pkl_status',
         'confirmed_status',
+        'expired_date',
+        'worker_available',
     ];
 
     // protected $guarded = [
