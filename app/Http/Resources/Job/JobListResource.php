@@ -28,6 +28,7 @@ class JobListResource extends JsonResource
                 'name' => $this->company->name,
                 'location' => $this->company->location,
             ],
+            'expired_date' => $this->expired_date,
             'pkl_status' => AppFunction::booleanResponse($this->pkl_status),
             'confirmed_status' => $this->confirmed_status,
             'created_at' => $this->created_at,

@@ -97,6 +97,7 @@ Route::group(['prefix' => 'worker'], function () {
     
     Route::middleware(['middleware' => 'auth:worker'])->group(function () {
         # Auth pt.2
+        Route::post('/fill-data', [AuthWorkerController::class, 'fillData']);
         Route::post('/change-password', [AuthWorkerController::class, 'changePassword']);
         Route::get('/logout', [AuthWorkerController::class, 'logout']);
         Route::prefix('me')->group(function () {
@@ -119,6 +120,9 @@ Route::group(['prefix' => 'worker'], function () {
                 Route::get('/device-token', 'getDeviceToken');
                 Route::post('/device-token/edit', 'setDeviceToken');
                 Route::delete('/device-token/delete', 'deleteDeviceToken');
+                
+                Route::get('/status', 'getStatus');
+                Route::post('/status/edit', 'setStatus');
             });
         });
         
@@ -196,6 +200,8 @@ Route::group(['prefix' => 'worker'], function () {
             Route::get('/', 'index');
             Route::post('/{id}/read', 'read');
             Route::post('/create', 'create');
+            Route::delete('/delete', 'deleteAll');
+            Route::delete('/delete/{id}', 'deleteById');
         });
     });
 });
@@ -285,6 +291,8 @@ Route::group(['prefix' => 'company'], function () {
             Route::get('/', 'index');
             Route::post('/{id}/read', 'read');
             Route::post('/create', 'create');
+            Route::delete('/delete', 'deleteAll');
+            Route::delete('/delete/{id}', 'deleteById');
         });
     });
 });

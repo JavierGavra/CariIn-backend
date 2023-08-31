@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('inboxes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('user_type'); // Menyimpan jenis model pengguna (misalnya: Worker, Company, Admin)
+            $table->string('user_type');
             $table->text('subject');
             $table->text('message');
             $table->boolean('read')->default(false);
+            $table->string('type')->default('sistem');
+            $table->integer('redirect_id')->nullable();
             $table->timestamps();
         });
     }

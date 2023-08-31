@@ -63,4 +63,32 @@ class InboxController extends Controller
             'data' => [],
         ], 201);
     }
+
+    
+    public function deleteAll() {
+        $company = auth()->user();
+        $company->inbox->each->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted all data',
+            'data' => [],
+        ]);
+    }
+    
+    public function deleteById(int $id) {
+        $company = auth()->user();
+        $inbox = $company->inbox->find($id);
+
+        if (is_null($inbox)) {
+            return HttpStatus::code404('Data not found');
+        } else {
+            $inbox->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully deleted data',
+                'data' => [],
+            ]);
+        }
+    }
 }

@@ -18,13 +18,15 @@ return new class extends Migration
             $table->string('password');
             $table->string('profile_image')->nullable();
             $table->string('backdrop_image')->nullable();
-            $table->enum('gender', ["pria", "wanita"]);
-            $table->string('phone_number');
-            $table->text('address');
-            $table->date('born_date');
+            $table->enum('gender', ["pria", "wanita"])->nullable();
+            $table->string('phone_number')->nullable();
+            $table->text('address')->nullable();
+            $table->date('born_date')->nullable();
+            $table->string('interested')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('company_visible');
-            $table->string('role', 10);
+            $table->boolean('company_visible')->default(false);
+            $table->enum('status', ['bekerja', 'tidak_bekerja'])->default('tidak_bekerja');
+            $table->string('role', 10)->default('worker');
             $table->timestamps();
         });
     }

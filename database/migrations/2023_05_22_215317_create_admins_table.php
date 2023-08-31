@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('gender', ["pria", "wanita"]);
             $table->string('phone_number')->unique();
             $table->date('born_date');
-            $table->string('role', 10);
+            $table->string('role', 10)->default('admin');
             $table->timestamps();
         });
     }

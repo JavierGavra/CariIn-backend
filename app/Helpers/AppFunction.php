@@ -25,8 +25,11 @@ class AppFunction{
     }
     
     //* Menghitung umur
-    public static function findAge (String $bornDate)
+    public static function findAge ($bornDate)
     {
+        if (is_null($bornDate)) {
+            return null;
+        }
         $currentDate = substr(now(), 0, 4);
         $bornDate = substr($bornDate, 0, 4);
         return $currentDate - $bornDate;
