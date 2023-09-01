@@ -68,7 +68,7 @@ class JobApplicationController extends Controller
         $jobApplication->confirmed_status = $request->confirmed_status;
         $jobApplication->save();
         
-        if ($request->confirmed_status == 'diterima') {
+        if ($request->confirmed_status == 'diterima' && !is_null($jobApplication->job->worker_available)) {
             $job = $jobApplication->job;
             $job->worker_available--;
             $job->save();
