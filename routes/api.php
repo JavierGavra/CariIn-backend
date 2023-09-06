@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/{id}/define-confirmation', 'defineConfirmation');
+            Route::get('/{id}/device-token', 'getDeviceToken');
             Route::post('/{id}/send-inbox', 'sendInbox');
             Route::get('/amount', 'amount');
         });
