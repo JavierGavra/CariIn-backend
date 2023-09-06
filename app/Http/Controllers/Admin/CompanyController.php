@@ -6,6 +6,7 @@ use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Company\CompanyDetailResource;
 use App\Http\Resources\Company\CompanyListResource;
+use App\Http\Resources\DeviceToken\DeviceTokenResource;
 use App\Models\Company;
 use App\Models\Inbox;
 use Illuminate\Http\Request;
@@ -121,5 +122,19 @@ class CompanyController extends Controller
             'message' => 'Inbox sent successfully',
             'data' => [],
         ], 201);
+    }
+
+    public function getDeviceToken(int $id) {
+        $company = Company::find($id);
+        
+        if (is_null($company)) {
+            return HttpStatus::code404('Data not found');
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Get company device token',
+                'data' => new DeviceTokenResource($company)
+            ]);
+        }
     }
 }
