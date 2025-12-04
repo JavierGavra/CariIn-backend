@@ -1,41 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\Worker;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Worker;
+use App\Models\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class WorkerController extends Controller
+class AuthController extends Controller
 {
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:App\Models\Worker,username',
-            'email' => 'required|email|unique:App\Models\Worker,email',
+            'username' => 'required|unique:App\Models\Admin,username',
+            'email' => 'required|email|unique:App\Models\Admin,email',
             'password' => 'required',
-            'gender' => 'required',
-            'phone_number' => 'required|unique:App\Models\Worker,phone_number',
-            'born_date' => 'required'
+            'gender' => 'required'
         ]);
 
-        $worker = Worker::create([
+        $admin = Admin::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'gender' => $request->gender,
-            'phone_number' => $request->phone_number,
-            'born_date' => $request->born_date,
-            'role' => 'worker'
+            'role' => 'admin'
         ]);
 
-        if ($worker) {
+        if ($admin) {
             return response()->json([
                 'success' => true,
                 'message' => 'Successful registration',
-                'data' => $worker,
+                'data' => $admin,
             ], 201);
         } else {
             return response()->json([
@@ -53,9 +49,9 @@ class WorkerController extends Controller
             'password' => 'required'
         ]);
 
-        $worker = Worker::where('email', $request->email)->first();
+        $admin = Admin::where('email', $request->email)->first();
         $credentials = request(['email', 'password']);
-        if (! $token = auth()->guard('worker')->attempt($credentials)) {
+        if (! $token = auth()->guard('admin')->attempt($credentials)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized',
@@ -68,11 +64,10 @@ class WorkerController extends Controller
             'message' => 'Successful login',
             'data' => [
                 'user' => [
-                    'email' => $worker->email,
-                    'username' => $worker->username,
-                    'phone_number' => $worker->phone_number,
+                    'email' => $admin->email,
+                    'username' => $admin->username,
                 ],
-                'role' => $worker->role,
+                'role' => $admin->role,
                 'token' => $token
             ]
         ]);
@@ -90,18 +85,15 @@ class WorkerController extends Controller
 
     public function me()
     {
-        $worker = auth()->user();
+        $admin = auth()->user();
         return response()->json([
             'success' => true,
             'message' => 'Data found',
             'data' => [
-                'username' => $worker->username,
-                'email' => $worker->email,
-                'gender' => $worker->gender,
-                'phone_number' => $worker->phone_number,
-                'address' => $worker->address,
-                'born_date' => $worker->born_date,
-                'role' => $worker->role,
+                'username' => $admin->username,
+                'email' => $admin->email,
+                'gender' => $admin->gender,
+                'role' => $admin->role,
             ]
         ]);
     }

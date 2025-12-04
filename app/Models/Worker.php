@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -42,10 +44,15 @@ class Worker extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
+        'profile_image',
+        'backdrop_image',
         'gender',
         'phone_number',
         'born_date',
-        'role'
+        'role',
+        'address',
+        'description',
+        'company_visible',
     ];
 
     /**
@@ -56,5 +63,50 @@ class Worker extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
     ];
+
+    public function jobApplications(): HasMany
+    {
+        return $this->hasMany(JobApplication::class);
+    }
+    
+    public function recruitWorkers(): HasMany
+    {
+        return $this->hasMany(RecruitWorker::class);
+    }
+    
+    public function fieldPractices(): HasMany
+    {
+        return $this->hasMany(FieldPractice::class);
+    }
+    
+    public function skills(): HasMany
+    {
+        return $this->hasMany(Skill::class);
+    }
+    
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(Experience::class);
+    }
+    
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class);
+    }
+
+    public function curriculumVitae(): HasOne
+    {
+        return $this->hasOne(CurriculumVitae::class);
+    }
+    
+    public function deviceToken(): HasOne
+    {
+        return $this->hasOne(WorkerDeviceToken::class);
+    }
+
+    public function inbox()
+    {
+        return $this->morphMany(Inbox::class, 'user');
+    }
 }
 

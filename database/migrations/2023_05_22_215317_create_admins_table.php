@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('gender', ["male", "female"]);
-            $table->string('role', 10);
+            $table->string('profile_image')->nullable();
+            $table->enum('gender', ["pria", "wanita"]);
+            $table->string('phone_number')->unique();
+            $table->date('born_date');
+            $table->string('role', 10)->default('admin');
             $table->timestamps();
         });
     }
